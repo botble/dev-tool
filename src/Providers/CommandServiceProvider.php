@@ -46,11 +46,26 @@ class CommandServiceProvider extends ServiceProvider
             RebuildPermissionsCommand::class,
             LocaleRemoveCommand::class,
             LocaleCreateCommand::class,
-            PluginCreateCommand::class,
-            PluginMakeCrudCommand::class,
-            ThemeCreateCommand::class,
-            WidgetCreateCommand::class,
-            WidgetRemoveCommand::class,
         ]);
+
+        if (class_exists(\Botble\PluginManagement\Providers\PluginManagementServiceProvider::class)) {
+            $this->commands([
+                PluginCreateCommand::class,
+                PluginMakeCrudCommand::class,
+            ]);
+        }
+
+        if (class_exists(\Botble\Theme\Providers\ThemeServiceProvider::class)) {
+            $this->commands([
+                ThemeCreateCommand::class,
+            ]);
+        }
+
+        if (class_exists(\Botble\Widget\Providers\WidgetServiceProvider::class)) {
+            $this->commands([
+                WidgetCreateCommand::class,
+                WidgetRemoveCommand::class,
+            ]);
+        }
     }
 }
