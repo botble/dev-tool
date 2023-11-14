@@ -15,9 +15,14 @@ use Botble\DevTool\Commands\Make\TableMakeCommand;
 use Botble\DevTool\Commands\PackageCreateCommand;
 use Botble\DevTool\Commands\PackageMakeCrudCommand;
 use Botble\DevTool\Commands\PackageRemoveCommand;
+use Botble\DevTool\Commands\PanelSectionMakeCommand;
 use Botble\DevTool\Commands\PluginCreateCommand;
 use Botble\DevTool\Commands\PluginMakeCrudCommand;
 use Botble\DevTool\Commands\RebuildPermissionsCommand;
+use Botble\DevTool\Commands\SettingControllerMakeCommand;
+use Botble\DevTool\Commands\SettingFormMakeCommand;
+use Botble\DevTool\Commands\SettingMakeCommand;
+use Botble\DevTool\Commands\SettingRequestMakeCommand;
 use Botble\DevTool\Commands\TestSendMailCommand;
 use Botble\DevTool\Commands\ThemeCreateCommand;
 use Botble\DevTool\Commands\WidgetCreateCommand;
@@ -46,6 +51,11 @@ class CommandServiceProvider extends ServiceProvider
             RebuildPermissionsCommand::class,
             LocaleRemoveCommand::class,
             LocaleCreateCommand::class,
+            PanelSectionMakeCommand::class,
+            SettingControllerMakeCommand::class,
+            SettingRequestMakeCommand::class,
+            SettingFormMakeCommand::class,
+            SettingMakeCommand::class,
         ]);
 
         if (class_exists(\Botble\PluginManagement\Providers\PluginManagementServiceProvider::class)) {
