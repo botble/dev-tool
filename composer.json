@@ -22,7 +22,7 @@
         }
     },
     "require": {
-
+        "laravel/framework": "^10.31"
     },
     "require-dev": {
         "laravel/pint": "^1.4.0",

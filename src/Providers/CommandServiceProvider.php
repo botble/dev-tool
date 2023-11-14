@@ -51,12 +51,17 @@ class CommandServiceProvider extends ServiceProvider
             RebuildPermissionsCommand::class,
             LocaleRemoveCommand::class,
             LocaleCreateCommand::class,
-            PanelSectionMakeCommand::class,
-            SettingControllerMakeCommand::class,
-            SettingRequestMakeCommand::class,
-            SettingFormMakeCommand::class,
-            SettingMakeCommand::class,
         ]);
+
+        if (version_compare('7.0.0', get_core_version(), '>=')) {
+            $this->commands([
+                PanelSectionMakeCommand::class,
+                SettingControllerMakeCommand::class,
+                SettingRequestMakeCommand::class,
+                SettingFormMakeCommand::class,
+                SettingMakeCommand::class,
+            ]);
+        }
 
         if (class_exists(\Botble\PluginManagement\Providers\PluginManagementServiceProvider::class)) {
             $this->commands([
