@@ -17,7 +17,7 @@ class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsFor
         $path = sprintf('%s/%sController.php', $this->getPath(), $settingName);
 
         if (File::exists($path)) {
-            $this->components->error("Setting controller [{$settingName}Controller] already exists.");
+            $this->components->error("Setting controller [{$path}] already exists.");
 
             return self::FAILURE;
         }
@@ -26,7 +26,7 @@ class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsFor
         $this->searchAndReplaceInFiles($settingName, $path);
         $this->renameFiles($settingName, $path);
 
-        $this->components->info('Setting controller created successfully.');
+        $this->components->info("Setting controller [{$path}] created successfully.");
 
         return self::SUCCESS;
     }
