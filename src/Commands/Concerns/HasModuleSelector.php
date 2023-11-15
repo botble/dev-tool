@@ -33,7 +33,7 @@ trait HasModuleSelector
         if (! in_array($module, $choices)) {
             $this->components->error('Module not found.');
 
-            exit(0);
+            exit(1);
         }
 
         return $module;
