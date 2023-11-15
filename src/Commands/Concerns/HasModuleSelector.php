@@ -5,7 +5,7 @@ namespace Botble\DevTool\Commands\Concerns;
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 
-trait HasModuleSeclector
+trait HasModuleSelector
 {
     public function promptModule(): string
     {

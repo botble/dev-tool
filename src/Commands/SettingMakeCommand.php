@@ -2,7 +2,7 @@
 
 namespace Botble\DevTool\Commands;
 
-use Botble\DevTool\Commands\Concerns\HasSettingModulePrompt;
+use Botble\DevTool\Commands\Concerns\HasModuleSelector;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 #[AsCommand(name: 'cms:make:setting', description: 'Make new setting resource (controller, form request, form builder)')]
 class SettingMakeCommand extends Command implements PromptsForMissingInput
 {
-    use HasSettingModulePrompt;
+    use HasModuleSelector;
 
     public function handle(): int
     {

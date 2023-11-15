@@ -3,7 +3,7 @@
 namespace Botble\DevTool\Commands;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
-use Botble\DevTool\Commands\Concerns\HasSettingModulePrompt;
+use Botble\DevTool\Commands\Concerns\HasModuleSelector;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputArgument;
 #[AsCommand(name: 'cms:make:setting:form', description: 'Make new setting form builder')]
 class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 {
-    use HasSettingModulePrompt;
+    use HasModuleSelector;
 
     public function handle(): int
     {
