@@ -1,20 +1,42 @@
 {
-  "name": "botble/{-name}",
-  "description": "{Name} package",
-  "type": "package",
-  "autoload": {
-    "psr-4": {
-      "Botble\\{Name}\\": "src"
-    }
-  },
-  "require": {
-
-  },
-  "extra":{
-    "laravel":{
-      "providers":[
-        "Botble\\{Name}\\Providers\\{Name}ServiceProvider"
-      ]
-    }
-  }
+    "name": "botble/dev-tool",
+    "description": "Dev tool commands for Botble CMS",
+    "type": "package",
+    "license": "MIT",
+    "keywords": [
+        "botble",
+        "botble cms",
+        "botble platform",
+        "botble dev tools"
+    ],
+    "homepage": "https://botble.com",
+    "authors": [
+        {
+            "name": "Botble Technologies",
+            "email": "contact@botble.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Botble\\DevTool\\": "src"
+        }
+    },
+    "require": {
+        "laravel/framework": "^10.31"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.4.0",
+        "phpunit/phpunit": "^9.0|^10.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Botble\\DevTool\\Providers\\DevToolServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable"
 }
