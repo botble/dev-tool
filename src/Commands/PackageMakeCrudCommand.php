@@ -3,6 +3,7 @@
 namespace Botble\DevTool\Commands;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Botble\DevTool\Commands\Concerns\HasSubModule;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -11,6 +12,8 @@ use Symfony\Component\Console\Input\InputArgument;
 #[AsCommand('cms:package:make:crud', 'Create a CRUD inside a package')]
 class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissingInput
 {
+    use HasSubModule;
+
     public function handle(): int
     {
         if (
@@ -48,23 +51,12 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
 
         $this->call('cache:clear');
 
-        $replacements = [
+        $this->handleReplacements($location, [
             'config/permissions.stub',
             'helpers/constants.stub',
             'routes/web.stub',
             'src/Providers/{Module}ServiceProvider.stub',
-        ];
-
-        foreach ($replacements as $replacement) {
-            $this->components->info(
-                sprintf('Add below code into %s', $this->replacementSubModule(
-                    null,
-                    str_replace(base_path(), '', $location) . '/' . $replacement
-                ))
-            );
-
-            $this->components->info($this->replacementSubModule($replacement));
-        }
+        ]);
 
         return self::SUCCESS;
     }
@@ -86,19 +78,6 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         foreach ($files as $file) {
             $this->laravel['files']->delete(sprintf('%s/%s', $location, $file));
         }
-    }
-
-    protected function replacementSubModule(string $file = null, string|null $content = null): string
-    {
-        $name = strtolower($this->argument('name'));
-
-        if ($file && empty($content)) {
-            $content = file_get_contents(sprintf('%s/../sub-module/%s', $this->getStub(), $file));
-        }
-
-        $replace = $this->getReplacements($name) + $this->baseReplacements($name);
-
-        return str_replace(array_keys($replace), $replace, $content);
     }
 
     public function getReplacements(string $replaceText): array

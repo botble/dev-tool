@@ -1,0 +1,11 @@
+// Add after this line: $this->app['events']->listen(RouteMatched::class, function () {
+\Botble\Base\Facades\PanelSectionManager::default()
+    ->registerItem(
+        \Botble\Setting\PanelSections\SettingOthersPanelSection::class,
+        fn () => \Botble\Base\PanelSections\PanelSectionItem::make('{-name}_settings')
+            ->setTitle(trans('{types}/{-module}::{-name}.settings.title'))
+            ->withIcon('ti ti-file-settings')
+            ->withDescription(trans('{types}/{-module}::{-name}.settings.description'))
+            ->withPriority(999)
+            ->withRoute('{-name}.settings')
+    );
