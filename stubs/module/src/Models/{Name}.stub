@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\{Module}\Models;
+namespace {Module}\Models;
 
 use Botble\Base\Casts\SafeContent;
 use Botble\Base\Enums\BaseStatusEnum;

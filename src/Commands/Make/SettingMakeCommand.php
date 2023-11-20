@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
 use Illuminate\Console\Command;

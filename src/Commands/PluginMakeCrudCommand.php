@@ -24,7 +24,7 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
         $location = plugin_path($plugin);
 
         if (! File::isDirectory($location)) {
-            $this->components->error('Plugin named [' . $plugin . '] does not exists.');
+            $this->components->error(sprintf('Plugin named [%s] does not exists.', $plugin));
 
             return self::FAILURE;
         }
@@ -35,11 +35,11 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
         $this->removeUnusedFiles($location);
         $this->renameFiles($name, $location);
         $this->searchAndReplaceInFiles($name, $location);
-        $this->line('------------------');
-        $this->line(
-            '<info>The CRUD for plugin </info> <comment>' . $plugin . '</comment> <info>was created in</info> <comment>' . $location . '</comment><info>, customize it!</info>'
+
+        $this->components->info(
+            sprintf('<info>The CRUD for plugin </info> <comment>%s</comment> <info>was created in</info> <comment>%s</comment><info>, customize it!</info>', $plugin, $location)
         );
-        $this->line('------------------');
+
         $this->call('cache:clear');
 
         $replacements = [
@@ -51,13 +51,13 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
         ];
 
         foreach ($replacements as $replacement) {
-            $this->line(
-                'Add below code into ' . $this->replacementSubModule(
+            $this->components->info(
+                sprintf('Add below code into %s', $this->replacementSubModule(
                     null,
                     str_replace(base_path(), '', $location) . '/' . $replacement
-                )
+                ))
             );
-            $this->info($this->replacementSubModule($replacement));
+            $this->components->info($this->replacementSubModule($replacement));
         }
 
         return self::SUCCESS;
@@ -78,7 +78,7 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
         ];
 
         foreach ($files as $file) {
-            File::delete($location . '/' . $file);
+            File::delete(sprintf('%s/%s', $location, $file));
         }
     }
 

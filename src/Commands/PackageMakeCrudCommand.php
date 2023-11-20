@@ -13,10 +13,10 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
 {
     public function handle(): int
     {
-        if (! preg_match('/^[a-z0-9\-]+$/i', $this->argument('package')) || ! preg_match(
-            '/^[a-z0-9\-]+$/i',
-            $this->argument('name')
-        )) {
+        if (
+            ! preg_match('/^[a-z0-9\-]+$/i', $this->argument('package'))
+            || ! preg_match('/^[a-z0-9\-]+$/i', $this->argument('name'))
+        ) {
             $this->components->error('Only alphabetic characters are allowed.');
 
             return self::FAILURE;
@@ -26,7 +26,7 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         $location = package_path($package);
 
         if (! $this->laravel['files']->isDirectory($location)) {
-            $this->components->error('Plugin named [' . $package . '] does not exists.');
+            $this->components->error(sprintf('Plugin named [%s] does not exists.', $package));
 
             return self::FAILURE;
         }
@@ -37,11 +37,15 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         $this->removeUnusedFiles($location);
         $this->renameFiles($name, $location);
         $this->searchAndReplaceInFiles($name, $location);
-        $this->line('------------------');
-        $this->line(
-            '<info>The CRUD for package </info> <comment>' . $package . '</comment> <info>was created in</info> <comment>' . $location . '</comment><info>, customize it!</info>'
+
+        $this->components->info(
+            sprintf(
+                '<info>The CRUD for package </info> <comment>%s</comment> <info>was created in</info> <comment>%s</comment><info>, customize it!</info>',
+                $package,
+                $location
+            )
         );
-        $this->line('------------------');
+
         $this->call('cache:clear');
 
         $replacements = [
@@ -52,14 +56,14 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         ];
 
         foreach ($replacements as $replacement) {
-            $this->line(
-                'Add below code into ' . $this->replacementSubModule(
+            $this->components->info(
+                sprintf('Add below code into %s', $this->replacementSubModule(
                     null,
                     str_replace(base_path(), '', $location) . '/' . $replacement
-                )
+                ))
             );
 
-            $this->info($this->replacementSubModule($replacement));
+            $this->components->info($this->replacementSubModule($replacement));
         }
 
         return self::SUCCESS;
@@ -70,7 +74,7 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         return __DIR__ . '/../../../dev-tool/stubs/module';
     }
 
-    protected function removeUnusedFiles(string $location)
+    protected function removeUnusedFiles(string $location): void
     {
         $files = [
             'config/permissions.stub',
@@ -80,7 +84,7 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         ];
 
         foreach ($files as $file) {
-            $this->laravel['files']->delete($location . '/' . $file);
+            $this->laravel['files']->delete(sprintf('%s/%s', $location, $file));
         }
     }
 
@@ -89,7 +93,7 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         $name = strtolower($this->argument('name'));
 
         if ($file && empty($content)) {
-            $content = file_get_contents($this->getStub() . '/../sub-module/' . $file);
+            $content = file_get_contents(sprintf('%s/../sub-module/%s', $this->getStub(), $file));
         }
 
         $replace = $this->getReplacements($name) + $this->baseReplacements($name);

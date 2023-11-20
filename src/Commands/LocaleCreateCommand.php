@@ -21,7 +21,7 @@ class LocaleCreateCommand extends Command implements PromptsForMissingInput
         $defaultLocale = lang_path('en');
         if ($this->laravel['files']->exists($defaultLocale)) {
             $this->laravel['files']->copyDirectory($defaultLocale, lang_path($this->argument('locale')));
-            $this->components->info('Created: ' . lang_path($this->argument('locale')));
+            $this->components->info(sprintf('Created: %s', lang_path($this->argument('locale'))));
         }
 
         $this->createLocaleInPath(lang_path('vendor/core'));

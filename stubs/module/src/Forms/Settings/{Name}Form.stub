@@ -1,0 +1,19 @@
+<?php
+
+namespace {Module}\Forms\Settings;
+
+use {Module}\Http\Requests\Settings\{Name}Request;
+use Botble\Setting\Forms\SettingForm;
+
+class {Name}Form extends SettingForm
+{
+    public function buildForm(): void
+    {
+        parent::buildForm();
+
+        $this
+            ->setSectionTitle('Setting title')
+            ->setSectionDescription('Setting description')
+            ->setValidatorClass({Name}Request::class);
+    }
+}

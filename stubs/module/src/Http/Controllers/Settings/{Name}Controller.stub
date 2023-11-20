@@ -1,24 +1,24 @@
 <?php
 
-namespace {namespace}\Http\Controllers\Settings;
+namespace {Module}\Http\Controllers\Settings;
 
 use Botble\Base\Facades\PageTitle;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Responses\BaseHttpResponse;
-use {namespace}\Forms\Settings\{name}Form;
-use {namespace}\Http\Requests\Settings\{name}Request;
+use {Module}\Forms\Settings\{Name}Form;
+use {Module}\Http\Requests\Settings\{Name}Request;
 use Botble\Setting\Http\Controllers\SettingController;
 
-class {name}Controller extends SettingController
+class {Name}Controller extends SettingController
 {
     public function edit(FormBuilder $formBuilder)
     {
         PageTitle::setTitle('Page title');
 
-        return $formBuilder->create({name}Form::class)->renderForm();
+        return $formBuilder->create({Name}Form::class)->renderForm();
     }
 
-    public function update({name}Request $request): BaseHttpResponse
+    public function update({Name}Request $request): BaseHttpResponse
     {
         return $this->performUpdate($request->validated());
     }

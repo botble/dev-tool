@@ -3,6 +3,7 @@
 namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Botble\DevTool\Commands\Concerns\HasModuleSelector;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -11,6 +12,8 @@ use Symfony\Component\Console\Input\InputArgument;
 #[AsCommand('cms:make:form', 'Make a form')]
 class FormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 {
+    use HasModuleSelector;
+
     public function handle(): int
     {
         if (! preg_match('/^[a-z0-9\-_]+$/i', $this->argument('name'))) {
@@ -21,15 +24,14 @@ class FormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 
         $name = $this->argument('name');
         $path = platform_path(
-            strtolower($this->argument('module')) . '/src/Forms/' . ucfirst(Str::studly($name)) . 'Form.php'
+            sprintf('%s/src/Forms/%sForm.php', $this->promptModule(), ucfirst(Str::studly($name)))
         );
 
         $this->publishStubs($this->getStub(), $path);
         $this->renameFiles($name, $path);
         $this->searchAndReplaceInFiles($name, $path);
-        $this->line('------------------');
 
-        $this->components->info('Created successfully <comment>' . $path . '</comment>!');
+        $this->components->info(sprintf('Created successfully <comment>%s</comment>!', $path));
 
         return self::SUCCESS;
     }
@@ -41,17 +43,14 @@ class FormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 
     public function getReplacements(string $replaceText): array
     {
-        $module = explode('/', $this->argument('module'));
-        $module = strtolower(end($module));
-
         return [
-            '{Module}' => ucfirst(Str::camel($module)),
+            '{Module}' => $this->transformModuleToNamespace(),
         ];
     }
 
     protected function configure(): void
     {
         $this->addArgument('name', InputArgument::REQUIRED, 'The form that you want to create');
-        $this->addArgument('module', InputArgument::REQUIRED, 'The module name');
+        $this->addArgument('module', InputArgument::OPTIONAL, 'The module name');
     }
 }

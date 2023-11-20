@@ -5,6 +5,9 @@ namespace Botble\DevTool\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+
+use function Laravel\Prompts\confirm;
+
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -15,7 +18,7 @@ class LocaleRemoveCommand extends Command implements PromptsForMissingInput
 
     public function handle(): int
     {
-        if (! $this->confirmToProceed('Are you sure you want to permanently delete?', true)) {
+        if (! confirm('Are you sure you want to permanently delete?')) {
             return self::FAILURE;
         }
 
@@ -28,15 +31,15 @@ class LocaleRemoveCommand extends Command implements PromptsForMissingInput
         $defaultLocale = lang_path($this->argument('locale'));
         if ($this->laravel['files']->exists($defaultLocale)) {
             $this->laravel['files']->deleteDirectory($defaultLocale);
-            $this->components->info('Deleted: ' . $defaultLocale);
+            $this->components->info(sprintf('Deleted: %s', $defaultLocale));
         }
 
-        $this->laravel['files']->delete(lang_path($this->argument('locale')) . '.json');
+        $this->laravel['files']->delete(sprintf('%s.json', lang_path($this->argument('locale'))));
         $this->removeLocaleInPath(lang_path('vendor/core'));
         $this->removeLocaleInPath(lang_path('vendor/packages'));
         $this->removeLocaleInPath(lang_path('vendor/plugins'));
 
-        $this->components->info('Removed locale "' . $this->argument('locale') . '" successfully!');
+        $this->components->info(sprintf('Removed locale "%s" successfully!', $this->argument('locale')));
 
         return self::SUCCESS;
     }

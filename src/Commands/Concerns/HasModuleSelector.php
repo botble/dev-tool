@@ -7,6 +7,8 @@ use function Laravel\Prompts\select;
 
 trait HasModuleSelector
 {
+    protected string $module;
+
     public function promptModule(): string
     {
         $modules = glob(platform_path('*/*'), GLOB_ONLYDIR);
@@ -20,11 +22,11 @@ trait HasModuleSelector
             } else {
                 $module = search(
                     label: 'Which module you want to create?',
-                    placeholder: 'Search...',
                     options: fn ($search) => array_values(array_filter(
                         $choices,
                         fn ($choice) => str_contains(strtolower($choice), strtolower($search))
                     )),
+                    placeholder: 'Search...',
                     scroll: 15,
                 );
             }
@@ -36,6 +38,26 @@ trait HasModuleSelector
             exit(1);
         }
 
+        $this->module = $module;
+
         return $module;
+    }
+
+    public function getModule(): string
+    {
+        if (isset($this->module)) {
+            return $this->module;
+        }
+
+        return $this->promptModule();
+    }
+
+    public function transformModuleToNamespace(): string
+    {
+        return str($this->module)
+            ->replace('/', '\\')
+            ->afterLast('\\')
+            ->studly()
+            ->prepend('Botble\\');
     }
 }

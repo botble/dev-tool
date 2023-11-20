@@ -31,13 +31,12 @@ class ThemeCreateCommand extends BaseMakeCommand implements PromptsForMissingInp
         $this->publishStubs($this->getStub(), $path);
 
         if ($files->isDirectory($this->getStub())) {
-            $screenshot = __DIR__ . '/../../resources/assets/images/' . rand(1, 5) . '.png';
-            $files->copy($screenshot, $path . '/screenshot.png');
+            $screenshot = sprintf('%s/../../resources/assets/images/%s.png', __DIR__, rand(1, 5));
+            $files->copy($screenshot, "$path/screenshot.png");
         }
 
         $this->searchAndReplaceInFiles($theme, $path);
         $this->renameFiles($theme, $path);
-
         $themeService->publishAssets($theme);
 
         $this->components->info(sprintf('Theme "%s" has been created.', $theme));

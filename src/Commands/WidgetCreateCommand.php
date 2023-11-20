@@ -19,7 +19,7 @@ class WidgetCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
         $path = $this->getPath();
 
         if ($files->isDirectory($path)) {
-            $this->components->error('Widget "' . $widget . '" is already exists.');
+            $this->components->error(sprintf('Widget "%s" is already exists.', $widget));
 
             return self::FAILURE;
         }
@@ -28,7 +28,7 @@ class WidgetCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
         $this->searchAndReplaceInFiles($widget, $path);
         $this->renameFiles($widget, $path);
 
-        $this->components->info('Widget "' . $widget . '" has been created in ' . $path . '.');
+        $this->components->info(sprintf('Widget "%s" has been created in %s.', $widget, $path));
 
         return self::SUCCESS;
     }
@@ -40,7 +40,7 @@ class WidgetCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
 
     protected function getPath(): string
     {
-        return theme_path(Theme::getThemeName() . '/widgets/' . $this->getWidget());
+        return theme_path(sprintf('%s/widgets/%s', Theme::getThemeName(), $this->getWidget()));
     }
 
     public function getStub(): string
