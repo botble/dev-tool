@@ -1,15 +1,12 @@
 <?php
 
-use Botble\Base\Facades\BaseHelper;
 use Illuminate\Support\Facades\Route;
+use Botble\Base\Facades\AdminHelper;
 
-Route::group(['namespace' => 'Botble\{Module}\Http\Controllers', 'middleware' => ['web', 'core']], function () {
-
-    Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
-
+Route::group(['namespace' => 'Botble\{Name}\Http\Controllers'], function () {
+    AdminHelper::registerRoutes(function () {
         Route::group(['prefix' => '{-names}', 'as' => '{-name}.'], function () {
             Route::resource('', '{Name}Controller')->parameters(['' => '{-name}']);
         });
     });
-
 });

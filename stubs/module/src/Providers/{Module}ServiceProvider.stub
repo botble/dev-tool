@@ -6,7 +6,6 @@ use Botble\{Module}\Models\{Name};
 use Botble\Base\Facades\DashboardMenu;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
 use Botble\Base\Supports\ServiceProvider;
-use Illuminate\Routing\Events\RouteMatched;
 
 class {Module}ServiceProvider extends ServiceProvider
 {
@@ -29,7 +28,7 @@ class {Module}ServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->app['events']->listen(RouteMatched::class, function () {
+        DashboardMenu::default()->beforeRetrieving(function () {
             DashboardMenu::registerItem([
                 'id' => 'cms-{types}-{-name}',
                 'priority' => 5,

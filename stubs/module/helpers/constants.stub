@@ -1,5 +1,0 @@
-<?php
-
-if (!defined('{NAME}_MODULE_SCREEN_NAME')) {
-    define('{NAME}_MODULE_SCREEN_NAME', '{-name}');
-}

@@ -9,7 +9,7 @@ use Botble\{Module}\Models\{Name};
 
 class {Name}Form extends FormAbstract
 {
-    public function buildForm(): void
+    public function setup(): void
     {
         $this
             ->setupModel(new {Name})
