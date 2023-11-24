@@ -1,0 +1,15 @@
+Route::prefix(BaseHelper::getAdminPrefix())->middleware('auth')->group(function () {
+    Route::prefix('settings/{-name}')->name('{-name}.')->group(function () {
+        Route::get('/', [
+            'as' => 'settings',
+            'uses' => '\{Module}\Http\Controllers\Settings\{Name}Controller@edit',
+            'permission' => '{-name}.settings',
+        ]);
+
+        Route::put('{-name}', [
+            'as' => 'settings.update',
+            'uses' => '\{Module}\Http\Controllers\Settings\{Name}Controller@update',
+            'permission' => '{-name}.settings',
+        ]);
+    });
+});

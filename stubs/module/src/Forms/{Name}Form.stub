@@ -1,23 +1,23 @@
 <?php
 
-namespace Botble\{Module}\Forms;
+namespace {Module}\Forms;
 
-use Botble\Base\Forms\FormAbstract;
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\{Module}\Http\Requests\{Name}Request;
-use Botble\{Module}\Models\{Name};
+use Botble\Base\Forms\FormAbstract;
+use {Module}\Http\Requests\{Name}Request;
+use {Module}\Models\{Name};
 
 class {Name}Form extends FormAbstract
 {
     public function buildForm(): void
     {
         $this
-            ->setupModel(new {Name})
+            ->setupModel(new {Name}())
             ->setValidatorClass({Name}Request::class)
             ->withCustomFields()
             ->add('name', 'text', [
                 'label' => trans('core/base::forms.name'),
-                'label_attr' => ['class' => 'control-label required'],
+                'required' => true,
                 'attr' => [
                     'placeholder' => trans('core/base::forms.name_placeholder'),
                     'data-counter' => 120,
@@ -25,10 +25,7 @@ class {Name}Form extends FormAbstract
             ])
             ->add('status', 'customSelect', [
                 'label' => trans('core/base::tables.status'),
-                'label_attr' => ['class' => 'control-label required'],
-                'attr' => [
-                    'class' => 'form-control select-full',
-                ],
+                'required' => true,
                 'choices' => BaseStatusEnum::labels(),
             ])
             ->setBreakFieldPoint('status');

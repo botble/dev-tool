@@ -1,20 +1,19 @@
 {
-  "name": "botble/{-name}",
-  "description": "{Name} package",
-  "type": "package",
-  "autoload": {
-    "psr-4": {
-      "Botble\\{Name}\\": "src"
+    "name": "botble/{-name}",
+    "description": "{Name} package",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "Botble\\{Name}\\": "src"
+        }
+    },
+    "require": {
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Botble\\{Name}\\Providers\\{Name}ServiceProvider"
+            ]
+        }
     }
-  },
-  "require": {
-
-  },
-  "extra":{
-    "laravel":{
-      "providers":[
-        "Botble\\{Name}\\Providers\\{Name}ServiceProvider"
-      ]
-    }
-  }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
@@ -27,7 +27,7 @@ class SettingRequestMakeCommand extends BaseMakeCommand implements PromptsForMis
 
         $this->publishStubs($this->getStub(), $path);
         $this->searchAndReplaceInFiles($settingName, $path);
-        $this->renameFiles("{$settingName}Request", $path);
+        $this->renameFiles($settingName, $path);
 
         $this->components->info("Setting request [{$path}] created successfully.");
 
@@ -37,14 +37,13 @@ class SettingRequestMakeCommand extends BaseMakeCommand implements PromptsForMis
     public function getReplacements(string $replaceText): array
     {
         return [
-            '{request}' => "{$replaceText}Request",
-            '{namespace}' => str(str($this->argument('module'))->afterLast('/')->ucfirst())->prepend('Botble\\'),
+            '{Module}' => $this->transformModuleToNamespace(),
         ];
     }
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../stubs/setting/{request}.stub';
+        return __DIR__ . '/../../../stubs/module/src/Http/Requests/Settings/{Name}Request.stub';
     }
 
     protected function getSetting(): string
