@@ -1,0 +1,23 @@
+<?php
+
+namespace {Module}\Http\Controllers\Settings;
+
+use Botble\Base\Forms\FormBuilder;
+use {Module}\Forms\Settings\{Name}Form;
+use {Module}\Http\Requests\Settings\{Name}Request;
+use Botble\Setting\Http\Controllers\SettingController;
+
+class {Name}Controller extends SettingController
+{
+    public function edit(FormBuilder $formBuilder)
+    {
+        $this->pageTitle('Page title');
+
+        return $formBuilder->create({Name}Form::class)->renderForm();
+    }
+
+    public function update({Name}Request $request)
+    {
+        return $this->performUpdate($request->validated());
+    }
+}

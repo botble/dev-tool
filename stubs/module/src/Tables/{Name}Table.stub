@@ -1,10 +1,8 @@
 <?php
 
-namespace Botble\{Module}\Tables;
+namespace {Module}\Tables;
 
-use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Facades\Html;
-use Botble\{Module}\Models\{Name};
+use {Module}\Models\{Name};
 use Botble\Table\Abstracts\TableAbstract;
 use Botble\Table\Actions\DeleteAction;
 use Botble\Table\Actions\EditAction;
@@ -12,7 +10,7 @@ use Botble\Table\BulkActions\DeleteBulkAction;
 use Botble\Table\Columns\CreatedAtColumn;
 use Botble\Table\Columns\IdColumn;
 use Botble\Table\Columns\StatusColumn;
-use Botble\Table\Columns\FormattedColumn;
+use Botble\Table\Columns\NameColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Botble\Table\HeaderActions\CreateHeaderAction;
 use Botble\Table\BulkChanges\CreatedAtBulkChange;
@@ -32,16 +30,7 @@ class {Name}Table extends TableAbstract
             ])
             ->addColumns([
                 IdColumn::make(),
-                FormattedColumn::make('name')
-                    ->renderUsing(function (FormattedColumn $column) {
-                        $item = $column->getItem();
-
-                        if (! $this->hasPermission('{-name}.edit')) {
-                            return BaseHelper::clean($item->name);
-                        }
-
-                        return Html::link(route('{-name}.edit', $item->getKey()), BaseHelper::clean($item->name));
-                    }),
+                NameColumn::make(),
                 CreatedAtColumn::make(),
                 StatusColumn::make(),
             ])

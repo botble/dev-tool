@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Botble\Base\Facades\AdminHelper;
 
-Route::group(['namespace' => 'Botble\{Name}\Http\Controllers'], function () {
+Route::group(['namespace' => '{Module}\Http\Controllers'], function () {
     AdminHelper::registerRoutes(function () {
         Route::group(['prefix' => '{-names}', 'as' => '{-name}.'], function () {
             Route::resource('', '{Name}Controller')->parameters(['' => '{-name}']);

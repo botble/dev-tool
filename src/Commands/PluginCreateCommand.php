@@ -24,22 +24,22 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
         $location = plugin_path($plugin);
 
         if (File::isDirectory($location)) {
-            $this->components->error('A plugin named [' . $plugin . '] already exists.');
+            $this->components->error(sprintf('A plugin named [%s] already exists.', $plugin));
 
             return self::FAILURE;
         }
 
         $this->publishStubs($this->getStub(), $location);
-        File::copy(__DIR__ . '/../../stubs/plugin/plugin.json', $location . '/plugin.json');
-        File::copy(__DIR__ . '/../../stubs/plugin/Plugin.stub', $location . '/src/Plugin.php');
+        File::copy(__DIR__ . '/../../stubs/plugin/plugin.json', sprintf('%s/plugin.json', $location));
+        File::copy(__DIR__ . '/../../stubs/plugin/Plugin.stub', sprintf('%s/src/Plugin.php', $location));
         $this->renameFiles($plugin, $location);
         $this->searchAndReplaceInFiles($plugin, $location);
         $this->removeUnusedFiles($location);
-        $this->line('------------------');
-        $this->line(
-            '<info>The plugin</info> <comment>' . $plugin . '</comment> <info>was created in</info> <comment>' . $location . '</comment><info>, customize it!</info>'
+
+        $this->components->info(
+            sprintf('<info>The plugin</info> <comment>%s</comment> <info>was created in</info> <comment>%s</comment><info>, customize it!</info>', $plugin, $location)
         );
-        $this->line('------------------');
+
         $this->call('cache:clear');
 
         return self::SUCCESS;
@@ -52,7 +52,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
 
     protected function removeUnusedFiles(string $location): void
     {
-        File::delete($location . '/composer.json');
+        File::delete(sprintf('%s/composer.json', $location));
     }
 
     public function getReplacements(string $replaceText): array
@@ -67,7 +67,11 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
             '{Modules}' => ucfirst(Str::plural(Str::snake(str_replace('-', '_', $replaceText)))),
             '{-modules}' => Str::plural($replaceText),
             '{MODULE}' => strtoupper(Str::snake(str_replace('-', '_', $replaceText))),
-            '{Module}' => ucfirst(Str::camel($replaceText)),
+            '{Module}' => str($replaceText)
+                ->replace('/', '\\')
+                ->afterLast('\\')
+                ->studly()
+                ->prepend('Botble\\'),
         ];
     }
 

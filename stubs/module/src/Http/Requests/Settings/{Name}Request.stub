@@ -1,10 +1,10 @@
 <?php
 
-namespace {namespace}\Http\Requests\Settings;
+namespace {Module}\Http\Requests\Settings;
 
 use Botble\Support\Http\Requests\Request;
 
-class {request} extends Request
+class {Name}Request extends Request
 {
     public function rules(): array
     {

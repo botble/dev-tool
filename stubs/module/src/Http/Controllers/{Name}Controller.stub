@@ -1,14 +1,14 @@
 <?php
 
-namespace Botble\{Module}\Http\Controllers;
+namespace {Module}\Http\Controllers;
 
 use Botble\Base\Http\Actions\DeleteResourceAction;
-use Botble\{Module}\Http\Requests\{Name}Request;
-use Botble\{Module}\Models\{Name};
+use {Module}\Http\Requests\{Name}Request;
+use {Module}\Models\{Name};
 use Botble\Base\Facades\PageTitle;
 use Botble\Base\Http\Controllers\BaseController;
-use Botble\{Module}\Tables\{Name}Table;
-use Botble\{Module}\Forms\{Name}Form;
+use {Module}\Tables\{Name}Table;
+use {Module}\Forms\{Name}Form;
 
 class {Name}Controller extends BaseController
 {

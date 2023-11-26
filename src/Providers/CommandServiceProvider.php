@@ -8,21 +8,20 @@ use Botble\DevTool\Commands\LocaleRemoveCommand;
 use Botble\DevTool\Commands\Make\ControllerMakeCommand;
 use Botble\DevTool\Commands\Make\FormMakeCommand;
 use Botble\DevTool\Commands\Make\ModelMakeCommand;
-use Botble\DevTool\Commands\Make\RepositoryMakeCommand;
 use Botble\DevTool\Commands\Make\RequestMakeCommand;
 use Botble\DevTool\Commands\Make\RouteMakeCommand;
 use Botble\DevTool\Commands\Make\TableMakeCommand;
 use Botble\DevTool\Commands\PackageCreateCommand;
 use Botble\DevTool\Commands\PackageMakeCrudCommand;
 use Botble\DevTool\Commands\PackageRemoveCommand;
-use Botble\DevTool\Commands\PanelSectionMakeCommand;
+use Botble\DevTool\Commands\Make\PanelSectionMakeCommand;
 use Botble\DevTool\Commands\PluginCreateCommand;
 use Botble\DevTool\Commands\PluginMakeCrudCommand;
 use Botble\DevTool\Commands\RebuildPermissionsCommand;
-use Botble\DevTool\Commands\SettingControllerMakeCommand;
-use Botble\DevTool\Commands\SettingFormMakeCommand;
-use Botble\DevTool\Commands\SettingMakeCommand;
-use Botble\DevTool\Commands\SettingRequestMakeCommand;
+use Botble\DevTool\Commands\Make\SettingControllerMakeCommand;
+use Botble\DevTool\Commands\Make\SettingFormMakeCommand;
+use Botble\DevTool\Commands\Make\SettingMakeCommand;
+use Botble\DevTool\Commands\Make\SettingRequestMakeCommand;
 use Botble\DevTool\Commands\TestSendMailCommand;
 use Botble\DevTool\Commands\ThemeCreateCommand;
 use Botble\DevTool\Commands\WidgetCreateCommand;
@@ -43,7 +42,6 @@ class CommandServiceProvider extends ServiceProvider
             RequestMakeCommand::class,
             FormMakeCommand::class,
             ModelMakeCommand::class,
-            RepositoryMakeCommand::class,
             PackageCreateCommand::class,
             PackageMakeCrudCommand::class,
             PackageRemoveCommand::class,

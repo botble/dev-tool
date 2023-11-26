@@ -1,8 +1,8 @@
 {
     "id": "botble/{-module}",
-    "name": "{Module}",
-    "namespace": "Botble\\{Module}\\",
-    "provider": "Botble\\{Module}\\Providers\\{Module}ServiceProvider",
+    "name": "{Name}",
+    "namespace": "Botble\\{Name}\\",
+    "provider": "Botble\\{Name}\\Providers\\{Name}ServiceProvider",
     "author": null,
     "url": null,
     "version": "1.0.0",

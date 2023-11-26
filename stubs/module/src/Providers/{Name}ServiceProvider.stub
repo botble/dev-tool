@@ -1,13 +1,13 @@
 <?php
 
-namespace Botble\{Module}\Providers;
+namespace {Module}\Providers;
 
-use Botble\{Module}\Models\{Name};
 use Botble\Base\Facades\DashboardMenu;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
 use Botble\Base\Supports\ServiceProvider;
+use Botble\Base\Traits\LoadAndPublishDataTrait;
+use {Module}\Models\{Name};
 
-class {Module}ServiceProvider extends ServiceProvider
+class {Name}ServiceProvider extends ServiceProvider
 {
     use LoadAndPublishDataTrait;
 

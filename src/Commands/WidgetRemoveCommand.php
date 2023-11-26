@@ -10,6 +10,9 @@ use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
+
+use function Laravel\Prompts\confirm;
+
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -20,7 +23,7 @@ class WidgetRemoveCommand extends Command implements PromptsForMissingInput
 
     public function handle(Filesystem $files): int
     {
-        if (! $this->confirmToProceed('Are you sure you want to permanently delete?', true)) {
+        if (! confirm('Are you sure you want to permanently delete?')) {
             return self::FAILURE;
         }
 
@@ -28,7 +31,7 @@ class WidgetRemoveCommand extends Command implements PromptsForMissingInput
         $path = $this->getPath();
 
         if (! $files->isDirectory($path)) {
-            $this->components->error('Widget "' . $widget . '" is not existed.');
+            $this->components->error(sprintf('Widget "%s" is not existed.', $widget));
 
             return self::FAILURE;
         }
@@ -37,12 +40,12 @@ class WidgetRemoveCommand extends Command implements PromptsForMissingInput
             $files->deleteDirectory($path);
             Widget::query()
                 ->where([
-                    'widget_id' => Str::studly($widget) . 'Widget',
+                    'widget_id' => sprintf('%sWidget', Str::studly($widget)),
                     'theme' => Theme::getThemeName(),
                 ])
                 ->each(fn (Widget $widget) => $widget->delete());
 
-            $this->components->info('Widget "' . $widget . '" has been deleted.');
+            $this->components->info(sprintf('Widget "%s" has been deleted.', $widget));
         } catch (Exception $exception) {
             $this->components->info($exception->getMessage());
         }
@@ -57,7 +60,7 @@ class WidgetRemoveCommand extends Command implements PromptsForMissingInput
 
     protected function getPath(): string
     {
-        return theme_path(Theme::getThemeName() . '/widgets/' . $this->getWidget());
+        return theme_path(sprintf('%s/widgets/%s', Theme::getThemeName(), $this->getWidget()));
     }
 
     protected function configure(): void

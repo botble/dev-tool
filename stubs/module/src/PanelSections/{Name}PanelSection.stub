@@ -1,11 +1,10 @@
 <?php
 
-namespace {namespace};
+namespace {Module}\PanelSections;
 
 use Botble\Base\PanelSections\PanelSection;
-use Botble\Base\PanelSections\PanelSectionItem;
 
-class {PanelSection} extends PanelSection
+class {Name}PanelSection extends PanelSection
 {
     public function setup(): void
     {

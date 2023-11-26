@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\{Module};
+namespace {Module};
 
 use Illuminate\Support\Facades\Schema;
 use Botble\PluginManagement\Abstracts\PluginOperationAbstract;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
@@ -9,27 +9,27 @@ use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
-#[AsCommand(name: 'cms:make:setting:form', description: 'Make new setting form builder')]
-class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
+#[AsCommand(name: 'cms:make:setting:controller', description: 'Make new setting controller')]
+class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 {
     use HasModuleSelector;
 
     public function handle(): int
     {
         $settingName = $this->getSetting();
-        $path = sprintf('%s/%sForm.php', $this->getPath(), $settingName);
+        $path = sprintf('%s/%sController.php', $this->getPath(), $settingName);
 
         if (File::exists($path)) {
-            $this->components->error("Setting form [{$path}] already exists.");
+            $this->components->error("Setting controller [{$path}] already exists.");
 
             return self::FAILURE;
         }
 
         $this->publishStubs($this->getStub(), $path);
         $this->searchAndReplaceInFiles($settingName, $path);
-        $this->renameFiles("{$settingName}Form", $path);
+        $this->renameFiles($settingName, $path);
 
-        $this->components->info("Setting form [{$path}] created successfully.");
+        $this->components->info("Setting controller [{$path}] created successfully.");
 
         return self::SUCCESS;
     }
@@ -37,16 +37,13 @@ class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissin
     public function getReplacements(string $replaceText): array
     {
         return [
-            '{name}' => $replaceText,
-            '{form}' => "{$replaceText}Form",
-            '{namespace}' => str(str($this->argument('module'))->afterLast('/')->ucfirst())->prepend('Botble\\'),
-            '{title}' => str($replaceText)->snake()->replace('_', ' ')->title(),
+            '{Module}' => $this->transformModuleToNamespace(),
         ];
     }
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../stubs/setting/{form}.stub';
+        return __DIR__ . '/../../../stubs/module/src/Http/Controllers/Settings/{Name}Controller.stub';
     }
 
     protected function getSetting(): string
@@ -56,7 +53,7 @@ class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissin
 
     protected function getPath(): string
     {
-        return platform_path(sprintf('%s/src/Forms/Settings', $this->promptModule()));
+        return platform_path(sprintf('%s/src/Http/Controllers/Settings', $this->promptModule()));
     }
 
     protected function configure(): void

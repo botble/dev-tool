@@ -1,32 +1,35 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Botble\DevTool\Commands\Concerns\HasModuleSelector;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
-#[AsCommand(name: 'cms:make:setting:controller', description: 'Make new setting controller')]
-class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
+#[AsCommand(name: 'cms:make:setting:form', description: 'Make new setting form builder')]
+class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 {
+    use HasModuleSelector;
+
     public function handle(): int
     {
         $settingName = $this->getSetting();
-        $path = sprintf('%s/%sController.php', $this->getPath(), $settingName);
+        $path = sprintf('%s/%sForm.php', $this->getPath(), $settingName);
 
         if (File::exists($path)) {
-            $this->components->error("Setting controller [{$path}] already exists.");
+            $this->components->error("Setting form [{$path}] already exists.");
 
             return self::FAILURE;
         }
 
         $this->publishStubs($this->getStub(), $path);
         $this->searchAndReplaceInFiles($settingName, $path);
-        $this->renameFiles($settingName, $path);
+        $this->renameFiles("{$settingName}Form", $path);
 
-        $this->components->info("Setting controller [{$path}] created successfully.");
+        $this->components->info("Setting form [{$path}] created successfully.");
 
         return self::SUCCESS;
     }
@@ -34,15 +37,13 @@ class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsFor
     public function getReplacements(string $replaceText): array
     {
         return [
-            '{name}' => $replaceText,
-            '{controller}' => "{$replaceText}Controller",
-            '{namespace}' => str(str($this->argument('module'))->afterLast('/')->ucfirst())->prepend('Botble\\'),
+            '{Module}' => $this->transformModuleToNamespace(),
         ];
     }
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../stubs/setting/{controller}.stub';
+        return __DIR__ . '/../../../stubs/module/src/Forms/Settings/{Name}Form.stub';
     }
 
     protected function getSetting(): string
@@ -52,13 +53,13 @@ class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsFor
 
     protected function getPath(): string
     {
-        return platform_path(sprintf('%s/src/Http/Controllers/Settings', $this->argument('module')));
+        return platform_path(sprintf('%s/src/Forms/Settings', $this->promptModule()));
     }
 
     protected function configure(): void
     {
         $this
             ->addArgument('name', InputArgument::REQUIRED, 'The name of the setting (e.g. BlogSetting)')
-            ->addArgument('module', InputArgument::REQUIRED, 'The name of the module (e.g. plugins/blog)');
+            ->addArgument('module', InputArgument::OPTIONAL, 'The name of the module (e.g. plugins/blog)');
     }
 }
