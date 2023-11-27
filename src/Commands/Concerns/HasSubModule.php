@@ -16,7 +16,7 @@ trait HasSubModule
                 ))
             );
 
-            info($this->replacementSubModule($replacement));
+            info($this->replacementSubModule($destination));
         }
     }
 

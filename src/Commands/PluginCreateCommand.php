@@ -67,7 +67,11 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
             '{Modules}' => ucfirst(Str::plural(Str::snake(str_replace('-', '_', $replaceText)))),
             '{-modules}' => Str::plural($replaceText),
             '{MODULE}' => strtoupper(Str::snake(str_replace('-', '_', $replaceText))),
-            '{Module}' => ucfirst(Str::camel($replaceText)),
+            '{Module}' => str($replaceText)
+                ->replace('/', '\\')
+                ->afterLast('\\')
+                ->studly()
+                ->prepend('Botble\\'),
         ];
     }
 

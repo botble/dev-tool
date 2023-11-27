@@ -12,7 +12,7 @@ class {Name}Request extends Request
     {
         return [
             'name' => ['required', 'string', 'max:220'],
-            'status' => [Rule::in(BaseStatusEnum::values())],
+            'status' => Rule::in(BaseStatusEnum::values()),
         ];
     }
 }

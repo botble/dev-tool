@@ -32,7 +32,6 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
         }
 
         $name = strtolower($this->argument('name'));
-
         $this->publishStubs($this->getStub(), $location);
         $this->removeUnusedFiles($location);
         $this->renameFiles($name, $location);
@@ -46,7 +45,7 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
 
         $this->handleReplacements($location, [
             'config/permissions.stub',
-            'helpers/constants.stub',
+            'helpers/helpers.stub',
             'routes/web.stub',
             'src/Providers/{Module}ServiceProvider.stub',
             'src/Plugin.stub',
