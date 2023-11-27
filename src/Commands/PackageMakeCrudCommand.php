@@ -53,7 +53,7 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
 
         $this->handleReplacements($location, [
             'config/permissions.stub',
-            'helpers/constants.stub',
+            'helpers/helpers.stub',
             'routes/web.stub',
             'src/Providers/{Module}ServiceProvider.stub',
         ]);

@@ -16,19 +16,19 @@ class {Name}Controller extends BaseController
     {
         $this
             ->breadcrumb()
-            ->add(trans(trans('{types}/{-module}::{-name}.name')), route('{-name}.index'));
+            ->add(trans(trans('{types}/{-name}::{-name}.name')), route('{-name}.index'));
     }
 
     public function index({Name}Table $table)
     {
-        PageTitle::setTitle(trans('{types}/{-module}::{-name}.name'));
+        PageTitle::setTitle(trans('{types}/{-name}::{-name}.name'));
 
         return $table->renderTable();
     }
 
     public function create()
     {
-        PageTitle::setTitle(trans('{types}/{-module}::{-name}.create'));
+        PageTitle::setTitle(trans('{types}/{-name}::{-name}.create'));
 
         return {Name}Form::create()->renderForm();
     }

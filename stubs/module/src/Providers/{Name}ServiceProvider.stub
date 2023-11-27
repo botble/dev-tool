@@ -33,7 +33,7 @@ class {Name}ServiceProvider extends ServiceProvider
                 'id' => 'cms-{types}-{-name}',
                 'priority' => 5,
                 'parent_id' => null,
-                'name' => '{types}/{-module}::{-name}.name',
+                'name' => '{types}/{-name}::{-name}.name',
                 'icon' => 'fa fa-list',
                 'url' => route('{-name}.index'),
                 'permissions' => ['{-name}.index'],
