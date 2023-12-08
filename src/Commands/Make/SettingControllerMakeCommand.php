@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -17,7 +18,9 @@ class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsFor
     public function handle(): int
     {
         $settingName = $this->getSetting();
-        $path = sprintf('%s/%sController.php', $this->getPath(), $settingName);
+        $path = Helper::joinPaths([
+            $this->getPath(), $settingName . 'Controller.php',
+        ]);
 
         if (File::exists($path)) {
             $this->components->error("Setting controller [{$path}] already exists.");
@@ -43,7 +46,16 @@ class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsFor
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../stubs/module/src/Http/Controllers/Settings/{Name}Controller.stub';
+        return Helper::joinPaths([
+            dirname(__DIR__, 3),
+            'stubs',
+            'module',
+            'src',
+            'Http',
+            'Controllers',
+            'Settings',
+            '{Name}Controller.stub',
+        ]);
     }
 
     protected function getSetting(): string
@@ -53,7 +65,11 @@ class SettingControllerMakeCommand extends BaseMakeCommand implements PromptsFor
 
     protected function getPath(): string
     {
-        return platform_path(sprintf('%s/src/Http/Controllers/Settings', $this->promptModule()));
+        return platform_path(
+            Helper::joinPaths(
+                [$this->argument('module'), 'src', 'Http', 'Controllers', 'Settings']
+            )
+        );
     }
 
     protected function configure(): void

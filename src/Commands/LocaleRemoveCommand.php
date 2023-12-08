@@ -2,6 +2,7 @@
 
 namespace Botble\DevTool\Commands;
 
+use Botble\DevTool\Helper;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
@@ -35,9 +36,12 @@ class LocaleRemoveCommand extends Command implements PromptsForMissingInput
         }
 
         $this->laravel['files']->delete(sprintf('%s.json', lang_path($this->argument('locale'))));
-        $this->removeLocaleInPath(lang_path('vendor/core'));
-        $this->removeLocaleInPath(lang_path('vendor/packages'));
-        $this->removeLocaleInPath(lang_path('vendor/plugins'));
+
+        foreach (['core', 'packages', 'plugins'] as $name) {
+            $this->removeLocaleInPath(
+                lang_path(Helper::joinPaths(['vendor', $name]))
+            );
+        }
 
         $this->components->info(sprintf('Removed locale "%s" successfully!', $this->argument('locale')));
 

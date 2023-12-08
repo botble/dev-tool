@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -25,7 +26,9 @@ class ControllerMakeCommand extends BaseMakeCommand implements PromptsForMissing
         }
 
         $module = $this->promptModule();
-        $path = platform_path(sprintf('%s/src/Http/Controllers/%sController.php', $module, ucfirst(Str::studly($name))));
+        $path = platform_path(
+            Helper::joinPaths([$module, 'src', 'Http', 'Controllers', ucfirst(Str::studly($name)) . 'Controller.php'])
+        );
 
         $this->publishStubs($this->getStub(), $path);
         $this->renameFiles($name, $path);
@@ -38,7 +41,15 @@ class ControllerMakeCommand extends BaseMakeCommand implements PromptsForMissing
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../stubs/module/src/Http/Controllers/{Name}Controller.stub';
+        return Helper::joinPaths([
+            dirname(__DIR__, 3),
+            'stubs',
+            'module',
+            'src',
+            'Http',
+            'Controllers',
+            '{Name}Controller.stub',
+        ]);
     }
 
     public function getReplacements(string $replaceText): array

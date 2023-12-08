@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -46,7 +47,14 @@ class PanelSectionMakeCommand extends BaseMakeCommand implements PromptsForMissi
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../stubs/module/src/PanelSections/{Name}PanelSection.stub';
+        return Helper::joinPaths([
+            dirname(__DIR__, 3),
+            'stubs',
+            'module',
+            'src',
+            'PanelSections',
+            '{Name}PanelSection.stub',
+        ]);
     }
 
     protected function getPanelSection(): string
@@ -56,7 +64,14 @@ class PanelSectionMakeCommand extends BaseMakeCommand implements PromptsForMissi
 
     protected function getPath(): string
     {
-        return base_path(sprintf('platform/%s/src/PanelSections/%sPanelSection.php', $this->promptModule(), $this->getPanelSection()));
+        return platform_path(
+            Helper::joinPaths([
+                $this->promptModule(),
+                'src',
+                'PanelSections',
+                $this->getPanelSection() . 'PanelSection.php',
+            ])
+        );
     }
 
     protected function configure(): void

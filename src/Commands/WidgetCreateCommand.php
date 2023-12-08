@@ -3,6 +3,7 @@
 namespace Botble\DevTool\Commands;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Botble\DevTool\Helper;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem as File;
@@ -40,12 +41,14 @@ class WidgetCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
 
     protected function getPath(): string
     {
-        return theme_path(sprintf('%s/widgets/%s', Theme::getThemeName(), $this->getWidget()));
+        return theme_path(
+            Helper::joinPaths([Theme::getThemeName(), 'widgets', $this->getWidget()])
+        );
     }
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../stubs/widget';
+        return Helper::joinPaths([dirname(__DIR__, 2), 'stubs', 'widget']);
     }
 
     public function getReplacements(string $replaceText): array

@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,7 +25,7 @@ class FormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 
         $name = $this->argument('name');
         $path = platform_path(
-            sprintf('%s/src/Forms/%sForm.php', $this->promptModule(), ucfirst(Str::studly($name)))
+            Helper::joinPaths([$this->promptModule(), 'src', 'Forms', ucfirst(Str::studly($name)) . 'Form.php'])
         );
 
         $this->publishStubs($this->getStub(), $path);
@@ -38,7 +39,14 @@ class FormMakeCommand extends BaseMakeCommand implements PromptsForMissingInput
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../stubs/module/src/Forms/{Name}Form.stub';
+        return Helper::joinPaths([
+            dirname(__DIR__, 3),
+            'stubs',
+            'module',
+            'src',
+            'Forms',
+            '{Name}Form.stub',
+        ]);
     }
 
     public function getReplacements(string $replaceText): array

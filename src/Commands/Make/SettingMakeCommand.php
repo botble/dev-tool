@@ -5,6 +5,7 @@ namespace Botble\DevTool\Commands\Make;
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
 use Botble\DevTool\Commands\Concerns\HasSubModule;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,8 +34,9 @@ class SettingMakeCommand extends BaseMakeCommand implements PromptsForMissingInp
         ]);
 
         $this->handleReplacements(platform_path($module), [
-            'routes/web-settings.stub',
-            'src/PanelSections/PanelSection.stub' => 'src/Providers/{Module}ServiceProvider.stub',
+            Helper::joinPaths(['routes', 'web-settings.stub']),
+            Helper::joinPaths(['src', 'PanelSections', 'PanelSection.stub'])
+                => Helper::joinPaths(['src', 'Providers', '{Module}ServiceProvider.stub']),
         ]);
 
         return self::SUCCESS;
@@ -57,6 +59,10 @@ class SettingMakeCommand extends BaseMakeCommand implements PromptsForMissingInp
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../stubs/module';
+        return Helper::joinPaths([
+            dirname(__DIR__, 3),
+            'stubs',
+            'module',
+        ]);
     }
 }

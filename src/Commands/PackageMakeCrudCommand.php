@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasSubModule;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -52,10 +53,10 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
         $this->call('cache:clear');
 
         $this->handleReplacements($location, [
-            'config/permissions.stub',
-            'helpers/helpers.stub',
-            'routes/web.stub',
-            'src/Providers/{Module}ServiceProvider.stub',
+            Helper::joinPaths(['config', 'permissions.stub']),
+            Helper::joinPaths(['helpers', 'helpers.stub']),
+            Helper::joinPaths(['routes', 'web.stub']),
+            Helper::joinPaths(['src', 'Providers', '{Module}ServiceProvider.stub']),
         ]);
 
         return self::SUCCESS;
@@ -63,20 +64,22 @@ class PackageMakeCrudCommand extends BaseMakeCommand implements PromptsForMissin
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../dev-tool/stubs/module';
+        return dirname(__DIR__, 3) .
+            DIRECTORY_SEPARATOR .
+            Helper::joinPaths(['dev-tool', 'stubs', 'module']);
     }
 
     protected function removeUnusedFiles(string $location): void
     {
         $files = [
-            'config/permissions.stub',
-            'helpers/constants.stub',
-            'routes/web.stub',
-            'src/Providers/{Module}ServiceProvider.stub',
+            Helper::joinPaths(['config', 'permissions.stub']),
+            Helper::joinPaths(['helpers', 'constants.stub']),
+            Helper::joinPaths(['routes', 'web.stub']),
+            Helper::joinPaths(['src', 'Providers', '{Module}ServiceProvider.stub']),
         ];
 
         foreach ($files as $file) {
-            $this->laravel['files']->delete(sprintf('%s/%s', $location, $file));
+            $this->laravel['files']->delete(sprintf('%s%s%s', $location, DIRECTORY_SEPARATOR, $file));
         }
     }
 

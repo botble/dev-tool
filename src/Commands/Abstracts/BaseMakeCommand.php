@@ -3,6 +3,7 @@
 namespace Botble\DevTool\Commands\Abstracts;
 
 use Botble\Base\Facades\BaseHelper;
+use Botble\DevTool\Helper;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -91,7 +92,7 @@ abstract class BaseMakeCommand extends Command
         }
 
         foreach ($paths as $path) {
-            $path = $location . DIRECTORY_SEPARATOR . $path;
+            $path = Helper::joinPaths([$location, $path]);
 
             $newPath = $this->transformFileName($pattern, $path);
             rename($path, $newPath);
