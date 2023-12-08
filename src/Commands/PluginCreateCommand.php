@@ -32,11 +32,11 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
 
         $this->publishStubs($this->getStub(), $location);
         File::copy(
-            Helper::joinPaths([__DIR__, '..', '..', 'stubs', 'plugin', 'plugin.json']),
+            Helper::joinPaths([dirname(__DIR__, 2), 'stubs', 'plugin', 'plugin.json']),
             Helper::joinPaths([$location, 'plugin.json'])
         );
         File::copy(
-            Helper::joinPaths([__DIR__, '..', '..', 'stubs', 'plugin', 'Plugin.stub']),
+            Helper::joinPaths([dirname(__DIR__, 2), 'stubs', 'plugin', 'Plugin.stub']),
             Helper::joinPaths([$location, 'src', 'Plugin.php'])
         );
         $this->renameFiles($plugin, $location);
@@ -54,7 +54,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
 
     public function getStub(): string
     {
-        return Helper::joinPaths([__DIR__, '..', '..', 'stubs', 'module']);
+        return Helper::joinPaths([dirname(__DIR__, 2), 'stubs', 'module']);
     }
 
     protected function removeUnusedFiles(string $location): void
