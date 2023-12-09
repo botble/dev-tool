@@ -2,6 +2,7 @@
 
 namespace Botble\DevTool\Commands;
 
+use Botble\DevTool\Helper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,9 +25,11 @@ class LocaleCreateCommand extends Command implements PromptsForMissingInput
             $this->components->info(sprintf('Created: %s', lang_path($this->argument('locale'))));
         }
 
-        $this->createLocaleInPath(lang_path('vendor/core'));
-        $this->createLocaleInPath(lang_path('vendor/packages'));
-        $this->createLocaleInPath(lang_path('vendor/plugins'));
+        foreach (['core', 'packages', 'plugins'] as $name) {
+            $this->createLocaleInPath(
+                lang_path(Helper::joinPaths(['vendor', $name]))
+            );
+        }
 
         return self::SUCCESS;
     }
@@ -42,8 +45,11 @@ class LocaleCreateCommand extends Command implements PromptsForMissingInput
         foreach ($folders as $module) {
             foreach ($this->laravel['files']->directories($module) as $locale) {
                 if ($this->laravel['files']->name($locale) == 'en') {
-                    $this->laravel['files']->copyDirectory($locale, $module . '/' . $this->argument('locale'));
-                    $this->components->info('Created: ' . $module . '/' . $this->argument('locale'));
+                    $this->laravel['files']->copyDirectory(
+                        $locale,
+                        $destination = Helper::joinPaths([$module, $this->argument('locale')])
+                    );
+                    $this->components->info('Created: ' . $destination);
                 }
             }
         }

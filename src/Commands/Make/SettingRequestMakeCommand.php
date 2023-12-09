@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -17,7 +18,9 @@ class SettingRequestMakeCommand extends BaseMakeCommand implements PromptsForMis
     public function handle(): int
     {
         $settingName = $this->getSetting();
-        $path = sprintf('%s/%sRequest.php', $this->getPath(), $settingName);
+        $path = Helper::joinPaths([
+            $this->getPath(), $settingName . 'Request.php',
+        ]);
 
         if (File::exists($path)) {
             $this->components->error("Setting request [{$path}] already exists.");
@@ -43,7 +46,16 @@ class SettingRequestMakeCommand extends BaseMakeCommand implements PromptsForMis
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../stubs/module/src/Http/Requests/Settings/{Name}Request.stub';
+        return Helper::joinPaths([
+            dirname(__DIR__, 3),
+            'stubs',
+            'module',
+            'src',
+            'Http',
+            'Requests',
+            'Settings',
+            '{Name}Request.stub',
+        ]);
     }
 
     protected function getSetting(): string
@@ -53,7 +65,15 @@ class SettingRequestMakeCommand extends BaseMakeCommand implements PromptsForMis
 
     protected function getPath(): string
     {
-        return platform_path(sprintf('%s/src/Http/Requests/Settings', $this->promptModule()));
+        return platform_path(
+            Helper::joinPaths([
+                $this->promptModule(),
+                'src',
+                'Http',
+                'Requests',
+                'Settings',
+            ])
+        );
     }
 
     protected function configure(): void

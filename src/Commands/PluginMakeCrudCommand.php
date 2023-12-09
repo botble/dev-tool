@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasSubModule;
+use Botble\DevTool\Helper;
 use Botble\PluginManagement\Commands\Concern\HasPluginNameValidation;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
@@ -44,11 +45,11 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
         $this->call('cache:clear');
 
         $this->handleReplacements($location, [
-            'config/permissions.stub',
-            'helpers/helpers.stub',
-            'routes/web.stub',
-            'src/Providers/{Module}ServiceProvider.stub',
-            'src/Plugin.stub',
+            Helper::joinPaths(['config', 'permissions.stub']),
+            Helper::joinPaths(['helpers', 'helpers.stub']),
+            Helper::joinPaths(['routes', 'web.stub']),
+            Helper::joinPaths(['src', 'Providers', '{Module}ServiceProvider.stub']),
+            Helper::joinPaths(['src', 'Plugin.stub']),
         ]);
 
         return self::SUCCESS;
@@ -56,20 +57,20 @@ class PluginMakeCrudCommand extends BaseMakeCommand implements PromptsForMissing
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../dev-tool/stubs/module';
+        return Helper::joinPaths([dirname(__DIR__, 3), 'dev-tool', 'stubs', 'module']);
     }
 
     protected function removeUnusedFiles(string $location): void
     {
         $files = [
-            'config/permissions.stub',
-            'helpers/constants.stub',
-            'routes/web.stub',
-            'src/Providers/{Module}ServiceProvider.stub',
+            Helper::joinPaths(['config', 'permissions.stub']),
+            Helper::joinPaths(['helpers', 'constants.stub']),
+            Helper::joinPaths(['routes', 'web.stub']),
+            Helper::joinPaths(['src', 'Providers', '{Module}ServiceProvider.stub']),
         ];
 
         foreach ($files as $file) {
-            File::delete(sprintf('%s/%s', $location, $file));
+            File::delete(Helper::joinPaths([$location, $file]));
         }
     }
 

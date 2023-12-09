@@ -3,6 +3,7 @@
 namespace Botble\DevTool\Commands;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Botble\DevTool\Helper;
 use Botble\Theme\Commands\Traits\ThemeTrait;
 use Botble\Theme\Services\ThemeService;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
@@ -31,8 +32,14 @@ class ThemeCreateCommand extends BaseMakeCommand implements PromptsForMissingInp
         $this->publishStubs($this->getStub(), $path);
 
         if ($files->isDirectory($this->getStub())) {
-            $screenshot = sprintf('%s/../../resources/assets/images/%s.png', __DIR__, rand(1, 5));
-            $files->copy($screenshot, "$path/screenshot.png");
+            $screenshot = Helper::joinPaths([
+                dirname(__DIR__, 2),
+                'resources',
+                'assets',
+                'images',
+                rand(1, 5) . '.png',
+            ]);
+            $files->copy($screenshot, $path . DIRECTORY_SEPARATOR . 'screenshot.png');
         }
 
         $this->searchAndReplaceInFiles($theme, $path);
@@ -46,7 +53,7 @@ class ThemeCreateCommand extends BaseMakeCommand implements PromptsForMissingInp
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../stubs/theme';
+        return Helper::joinPaths([dirname(__DIR__, 2), 'stubs', 'theme']);
     }
 
     public function baseReplacements(string $replaceText): array

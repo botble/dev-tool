@@ -2,6 +2,7 @@
 
 namespace Botble\DevTool\Commands;
 
+use Botble\DevTool\Helper;
 use Botble\Theme\Facades\Theme;
 use Botble\Widget\Models\Widget;
 use Exception;
@@ -60,7 +61,9 @@ class WidgetRemoveCommand extends Command implements PromptsForMissingInput
 
     protected function getPath(): string
     {
-        return theme_path(sprintf('%s/widgets/%s', Theme::getThemeName(), $this->getWidget()));
+        return theme_path(
+            Helper::joinPaths([Theme::getThemeName(), 'widgets', $this->getWidget()])
+        );
     }
 
     protected function configure(): void

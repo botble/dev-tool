@@ -4,6 +4,7 @@ namespace Botble\DevTool\Commands\Make;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
 use Botble\DevTool\Commands\Concerns\HasModuleSelector;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -17,7 +18,7 @@ class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissin
     public function handle(): int
     {
         $settingName = $this->getSetting();
-        $path = sprintf('%s/%sForm.php', $this->getPath(), $settingName);
+        $path = Helper::joinPaths([$this->getPath(), $settingName . 'Form.php']);
 
         if (File::exists($path)) {
             $this->components->error("Setting form [{$path}] already exists.");
@@ -43,7 +44,15 @@ class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissin
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../../stubs/module/src/Forms/Settings/{Name}Form.stub';
+        return Helper::joinPaths([
+            dirname(__DIR__, 3),
+            'stubs',
+            'module',
+            'src',
+            'Forms',
+            'Settings',
+            '{Name}Form.stub',
+        ]);
     }
 
     protected function getSetting(): string
@@ -53,7 +62,11 @@ class SettingFormMakeCommand extends BaseMakeCommand implements PromptsForMissin
 
     protected function getPath(): string
     {
-        return platform_path(sprintf('%s/src/Forms/Settings', $this->promptModule()));
+        return platform_path(
+            Helper::joinPaths(
+                [$this->getModule(), 'src', 'Forms', 'Settings']
+            )
+        );
     }
 
     protected function configure(): void

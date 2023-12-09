@@ -8,20 +8,20 @@ use Botble\DevTool\Commands\LocaleRemoveCommand;
 use Botble\DevTool\Commands\Make\ControllerMakeCommand;
 use Botble\DevTool\Commands\Make\FormMakeCommand;
 use Botble\DevTool\Commands\Make\ModelMakeCommand;
+use Botble\DevTool\Commands\Make\PanelSectionMakeCommand;
 use Botble\DevTool\Commands\Make\RequestMakeCommand;
 use Botble\DevTool\Commands\Make\RouteMakeCommand;
-use Botble\DevTool\Commands\Make\TableMakeCommand;
-use Botble\DevTool\Commands\PackageCreateCommand;
-use Botble\DevTool\Commands\PackageMakeCrudCommand;
-use Botble\DevTool\Commands\PackageRemoveCommand;
-use Botble\DevTool\Commands\Make\PanelSectionMakeCommand;
-use Botble\DevTool\Commands\PluginCreateCommand;
-use Botble\DevTool\Commands\PluginMakeCrudCommand;
-use Botble\DevTool\Commands\RebuildPermissionsCommand;
 use Botble\DevTool\Commands\Make\SettingControllerMakeCommand;
 use Botble\DevTool\Commands\Make\SettingFormMakeCommand;
 use Botble\DevTool\Commands\Make\SettingMakeCommand;
 use Botble\DevTool\Commands\Make\SettingRequestMakeCommand;
+use Botble\DevTool\Commands\Make\TableMakeCommand;
+use Botble\DevTool\Commands\PackageCreateCommand;
+use Botble\DevTool\Commands\PackageMakeCrudCommand;
+use Botble\DevTool\Commands\PackageRemoveCommand;
+use Botble\DevTool\Commands\PluginCreateCommand;
+use Botble\DevTool\Commands\PluginMakeCrudCommand;
+use Botble\DevTool\Commands\RebuildPermissionsCommand;
 use Botble\DevTool\Commands\TestSendMailCommand;
 use Botble\DevTool\Commands\ThemeCreateCommand;
 use Botble\DevTool\Commands\WidgetCreateCommand;
@@ -51,7 +51,7 @@ class CommandServiceProvider extends ServiceProvider
             LocaleCreateCommand::class,
         ]);
 
-        if (version_compare('7.0.0', get_core_version(), '>=')) {
+        if (version_compare(get_core_version(), '7.0.0', '>=')) {
             $this->commands([
                 PanelSectionMakeCommand::class,
                 SettingControllerMakeCommand::class,

@@ -3,12 +3,13 @@
 namespace Botble\DevTool\Commands;
 
 use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Botble\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
-#[AsCommand('cms:package:create', 'Create a package in the /platform/packages directory.')]
+#[AsCommand('cms:package:create', 'Create a new package.')]
 class PackageCreateCommand extends BaseMakeCommand implements PromptsForMissingInput
 {
     public function handle(): int
@@ -46,7 +47,9 @@ class PackageCreateCommand extends BaseMakeCommand implements PromptsForMissingI
 
     public function getStub(): string
     {
-        return __DIR__ . '/../../stubs/module';
+        return dirname(__DIR__, 2) .
+            DIRECTORY_SEPARATOR .
+            Helper::joinPaths(['stubs', 'module']);
     }
 
     public function getReplacements(string $replaceText): array

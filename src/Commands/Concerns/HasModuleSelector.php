@@ -2,6 +2,8 @@
 
 namespace Botble\DevTool\Commands\Concerns;
 
+use Botble\DevTool\Helper;
+
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 
@@ -11,7 +13,10 @@ trait HasModuleSelector
 
     public function promptModule(): string
     {
-        $modules = glob(platform_path('*/*'), GLOB_ONLYDIR);
+        $modules = glob(
+            platform_path(Helper::joinPaths(['*', '*'])),
+            GLOB_ONLYDIR
+        );
         $choices = array_map(fn (string $module): string => str_replace(platform_path(), '', $module), $modules);
 
         $module = $this->argument('module');
@@ -55,7 +60,7 @@ trait HasModuleSelector
     public function transformModuleToNamespace(): string
     {
         return str($this->module)
-            ->replace('/', '\\')
+            ->replace(DIRECTORY_SEPARATOR, '\\')
             ->afterLast('\\')
             ->studly()
             ->prepend('Botble\\');
