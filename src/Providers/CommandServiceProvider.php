@@ -51,7 +51,7 @@ class CommandServiceProvider extends ServiceProvider
             LocaleCreateCommand::class,
         ]);
 
-        if (version_compare('7.0.0', get_core_version(), '>=')) {
+        if (version_compare(get_core_version(), '7.0.0', '>=')) {
             $this->commands([
                 PanelSectionMakeCommand::class,
                 SettingControllerMakeCommand::class,
