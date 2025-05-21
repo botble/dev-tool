@@ -20,7 +20,7 @@ class ThemeCreateCommand extends BaseMakeCommand implements PromptsForMissingInp
 {
     use ThemeTrait;
 
-    protected string|null $parentTheme;
+    protected ?string $parentTheme;
 
     public function __construct(protected ThemeService $themeService)
     {

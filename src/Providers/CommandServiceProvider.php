@@ -26,6 +26,9 @@ use Botble\DevTool\Commands\TestSendMailCommand;
 use Botble\DevTool\Commands\ThemeCreateCommand;
 use Botble\DevTool\Commands\WidgetCreateCommand;
 use Botble\DevTool\Commands\WidgetRemoveCommand;
+use Botble\PluginManagement\Providers\PluginManagementServiceProvider;
+use Botble\Theme\Providers\ThemeServiceProvider;
+use Botble\Widget\Providers\WidgetServiceProvider;
 
 class CommandServiceProvider extends ServiceProvider
 {
@@ -61,20 +64,20 @@ class CommandServiceProvider extends ServiceProvider
             ]);
         }
 
-        if (class_exists(\Botble\PluginManagement\Providers\PluginManagementServiceProvider::class)) {
+        if (class_exists(PluginManagementServiceProvider::class)) {
             $this->commands([
                 PluginCreateCommand::class,
                 PluginMakeCrudCommand::class,
             ]);
         }
 
-        if (class_exists(\Botble\Theme\Providers\ThemeServiceProvider::class)) {
+        if (class_exists(ThemeServiceProvider::class)) {
             $this->commands([
                 ThemeCreateCommand::class,
             ]);
         }
 
-        if (class_exists(\Botble\Widget\Providers\WidgetServiceProvider::class)) {
+        if (class_exists(WidgetServiceProvider::class)) {
             $this->commands([
                 WidgetCreateCommand::class,
                 WidgetRemoveCommand::class,

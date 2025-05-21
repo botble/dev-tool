@@ -341,7 +341,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
         $this->components->error('Plugin ID does not match the pattern: (ex: <vendor>/<name>)');
     }
 
-    protected function bootServiceProviderContent(): string|null
+    protected function bootServiceProviderContent(): ?string
     {
         $componentAvailableOfPlugins = $this->componentAvailableOfPlugins;
 
@@ -384,7 +384,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
             ->toString();
     }
 
-    protected function registerAdvancedLanguage(): string|null
+    protected function registerAdvancedLanguage(): ?string
     {
         if (! $this->hasCrud) {
             return null;
@@ -397,7 +397,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
             }", Str::studly($this->argument('name')));
     }
 
-    protected function registerDashboardMenuContent(): string|null
+    protected function registerDashboardMenuContent(): ?string
     {
         if (! $this->hasCrud) {
             return null;
@@ -418,7 +418,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
         return PHP_EOL . str_repeat(' ', 12) . str_replace('{-name}', strtolower($this->argument('name')), $rawContent);
     }
 
-    protected function importsServiceProvider(): string|null
+    protected function importsServiceProvider(): ?string
     {
         if (! $this->hasCrud) {
             return null;

@@ -24,8 +24,8 @@ class RebuildPermissionsCommand extends Command
                 $users = User::query()->get();
                 foreach ($users as $user) {
                     $user->permissions = [
-                        ACL_ROLE_SUPER_USER => (bool)$user->super_user,
-                        ACL_ROLE_MANAGE_SUPERS => (bool)$user->manage_supers,
+                        ACL_ROLE_SUPER_USER => (bool) $user->super_user,
+                        ACL_ROLE_MANAGE_SUPERS => (bool) $user->manage_supers,
                     ];
                     $user->save();
                 }
@@ -41,8 +41,8 @@ class RebuildPermissionsCommand extends Command
                         );
                         if (! empty($user)) {
                             $user = $user[0];
-                            $permissions[ACL_ROLE_SUPER_USER] = (bool)$user->super_user;
-                            $permissions[ACL_ROLE_MANAGE_SUPERS] = (bool)$user->manage_supers;
+                            $permissions[ACL_ROLE_SUPER_USER] = (bool) $user->super_user;
+                            $permissions[ACL_ROLE_MANAGE_SUPERS] = (bool) $user->manage_supers;
                             DB::statement(
                                 "UPDATE users SET permissions = '" . json_encode(
                                     $permissions

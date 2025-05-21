@@ -22,7 +22,7 @@ trait HasSubModule
         }
     }
 
-    protected function replacementSubModule(string $file = null, $content = null): string
+    protected function replacementSubModule(?string $file = null, $content = null): string
     {
         $name = strtolower($this->argument('name'));
 
