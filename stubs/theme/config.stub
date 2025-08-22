@@ -47,9 +47,11 @@ return [
 
             $version = get_cms_version();
 
+            $theme->asset()->add('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css', version: '5.3.7');
+            $theme->asset()->add('bootstrap-icon', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css', version: '1.11.3');
             $theme->asset()->usePath()->add('style', 'css/style.css', version: $version);
 
-            $theme->asset()->container('footer')->add('jquery', 'libraries/jquery.min.js');
+            $theme->asset()->container('footer')->add('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js');
 
             $theme->asset()->container('footer')->usePath()->add(
                 'script',

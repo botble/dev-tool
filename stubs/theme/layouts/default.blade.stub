@@ -1,7 +1,11 @@
 {!! Theme::partial('header') !!}
 
-<div class="container">
-    {!! Theme::content() !!}
-</div>
+<main class="py-4">
+    <div class="container">
+        {!! Theme::partial('breadcrumbs') !!}
+
+        {!! Theme::content() !!}
+    </div>
+</main>
 
 {!! Theme::partial('footer') !!}

@@ -1,0 +1,375 @@
+# {Theme} Theme for Botble CMS
+
+Welcome to your new Botble CMS theme! This guide will help you get started with theme development.
+
+## 🚀 Quick Start
+
+### 1. Theme Structure
+
+```
+{theme}/
+├── assets/              # CSS, JS, and image files
+│   ├── css/
+│   │   └── style.css   # Main stylesheet
+│   ├── js/
+│   │   └── script.js   # Main JavaScript file
+│   └── sass/           # Optional: Sass files
+├── functions/          # Theme functions and configurations
+│   ├── functions.php   # Theme setup and helpers
+│   ├── theme-options.php # Admin customization options
+│   └── shortcodes.php  # Custom shortcodes
+├── lang/              # Translation files
+│   └── en/
+│       └── theme.php
+├── layouts/           # Layout templates
+│   └── default.blade.php # Main layout
+├── partials/          # Reusable template parts
+│   ├── header.blade.php
+│   └── footer.blade.php
+├── public/            # Compiled assets (auto-generated)
+├── routes/            # Custom routes
+│   └── web.php
+├── src/               # PHP source code
+│   └── Http/
+│       └── Controllers/
+├── views/             # Page templates
+│   ├── index.blade.php    # Homepage
+│   ├── page.blade.php     # Static pages
+│   ├── 404.blade.php      # 404 error page
+│   ├── 500.blade.php      # 500 error page
+│   └── 503.blade.php      # Maintenance page
+├── config.php         # Theme configuration
+├── theme.json         # Theme metadata
+├── webpack.mix.js     # Asset compilation config
+└── README.md          # This file
+```
+
+### 2. Initial Setup
+
+1. **Install dependencies** (if not already done):
+   ```bash
+   npm install
+   ```
+
+2. **Compile assets for development**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Watch for changes during development**:
+   ```bash
+   npm run watch
+   ```
+
+4. **Compile for production**:
+   ```bash
+   npm run prod
+   ```
+
+### 3. Configure Theme Options
+
+1. Go to **Admin Panel → Appearance → Theme options**
+2. Configure:
+   - Site title and description
+   - Logo and favicon
+   - Social media links
+   - Color scheme
+   - Footer content
+   - Custom CSS/JS
+
+## 📝 Development Guide
+
+### Creating Templates
+
+#### Homepage Template
+Edit `views/index.blade.php` to customize your homepage:
+
+```blade
+<div class="homepage">
+    <h1>{{ theme_option('homepage_title', 'Welcome') }}</h1>
+
+    @if (is_plugin_active('blog'))
+        {!! Theme::partial('recent-posts') !!}
+    @endif
+</div>
+```
+
+#### Page Templates
+Create custom page templates in `views/`:
+
+```blade
+{{-- views/page-full-width.blade.php --}}
+@extends('theme.{theme}::layouts.full-width')
+
+@section('content')
+    <h1>{{ $page->name }}</h1>
+    {!! BaseHelper::clean($page->content) !!}
+@endsection
+```
+
+Register in `functions/functions.php`:
+```php
+register_page_template([
+    'full-width' => __('Full Width Page'),
+]);
+```
+
+### Working with Menus
+
+Display menus in your templates:
+
+```blade
+{!! Menu::renderMenuLocation('main-menu', [
+    'options' => ['class' => 'navbar-nav'],
+    'view' => 'main-menu',
+]) !!}
+```
+
+### Adding Theme Options
+
+Edit `functions/theme-options.php`:
+
+```php
+theme_option()
+    ->setField([
+        'id' => 'primary_color',
+        'section_id' => 'opt-text-subsection-general',
+        'type' => 'color',
+        'label' => __('Primary Color'),
+        'attributes' => [
+            'name' => 'primary_color',
+            'value' => '#ff2b4a',
+        ],
+    ]);
+```
+
+Access in templates:
+```blade
+<style>
+    :root {
+        --primary-color: {{ theme_option('primary_color', '#ff2b4a') }};
+    }
+</style>
+```
+
+### Creating Shortcodes
+
+Add to `functions/shortcodes.php`:
+
+```php
+add_shortcode('button', __('Button'), __('Display a button'), function ($shortcode) {
+    return Theme::partial('shortcodes.button', [
+        'text' => $shortcode->text,
+        'url' => $shortcode->url,
+        'type' => $shortcode->type ?: 'primary',
+    ]);
+});
+
+// Usage in content: [button text="Click me" url="/contact" type="primary"]
+```
+
+### Working with Widgets
+
+If the widget plugin is active:
+
+```php
+// Register widget area in functions/functions.php
+register_sidebar([
+    'id' => 'footer_sidebar',
+    'name' => __('Footer sidebar'),
+]);
+
+// Display in template
+{!! dynamic_sidebar('footer_sidebar') !!}
+```
+
+### Using Assets
+
+```php
+// In functions/functions.php
+Theme::asset()
+    ->add('theme-style', 'css/style.css')
+    ->add('theme-script', 'js/script.js', ['jquery'])
+    ->add('bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
+```
+
+### Translations
+
+Add translations in `lang/en/theme.php`:
+
+```php
+return [
+    'welcome' => 'Welcome to our website',
+    'read_more' => 'Read more',
+    'contact_us' => 'Contact us',
+];
+```
+
+Use in templates:
+```blade
+<h1>{{ __('theme.{theme}::theme.welcome') }}</h1>
+```
+
+## 🎨 Styling Guide
+
+### CSS Variables
+
+Your theme uses CSS custom properties for easy customization:
+
+```css
+:root {
+    --primary-color: #ff2b4a;
+    --secondary-color: #6c757d;
+    --text-color: #333333;
+    --bg-color: #ffffff;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+```
+
+### Responsive Design
+
+Use Bootstrap's grid system or CSS Grid:
+
+```blade
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">Main content</div>
+        <div class="col-md-4">Sidebar</div>
+    </div>
+</div>
+```
+
+### Dark Mode Support
+
+```css
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #e9ecef;
+        --bg-color: #212529;
+    }
+}
+```
+
+## 🔌 Plugin Integration
+
+### Blog Plugin
+
+```blade
+@if (is_plugin_active('blog'))
+    @php
+        $posts = get_recent_posts(5);
+    @endphp
+
+    @foreach($posts as $post)
+        <article>
+            <h2><a href="{{ $post->url }}">{{ $post->name }}</a></h2>
+            <p>{{ $post->description }}</p>
+        </article>
+    @endforeach
+@endif
+```
+
+### Gallery Plugin
+
+```blade
+@if (is_plugin_active('gallery'))
+    {!! render_galleries(8) !!}
+@endif
+```
+
+### Contact Form
+
+```blade
+@if (is_plugin_active('contact'))
+    {!! Theme::partial('contact-form') !!}
+@endif
+```
+
+## 🛠️ Advanced Features
+
+### AJAX Loading
+
+```javascript
+// In assets/js/script.js
+$(document).on('click', '.load-more', function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: $(this).attr('href'),
+        success: function(data) {
+            $('.posts-container').append(data.html);
+        }
+    });
+});
+```
+
+### Custom Routes
+
+In `routes/web.php`:
+
+```php
+Route::get('custom-page', 'CustomController@index')
+    ->name('theme.custom-page');
+```
+
+### SEO Optimization
+
+```blade
+{!! SeoHelper::render() !!}
+
+{{-- Or manually --}}
+<meta name="description" content="{{ $page->description }}">
+<meta property="og:title" content="{{ $page->name }}">
+<meta property="og:image" content="{{ RvMedia::getImageUrl($page->image) }}">
+```
+
+## 📚 Useful Functions
+
+### Theme Helpers
+
+- `theme_option('key', 'default')` - Get theme option
+- `Theme::asset()` - Manage assets
+- `Theme::partial('name', $data)` - Include partial
+- `Theme::breadcrumb()` - Show breadcrumbs
+- `Theme::content()` - Render main content
+- `Theme::layout('name')` - Set layout
+
+### CMS Helpers
+
+- `is_plugin_active('plugin-name')` - Check if plugin is active
+- `get_recent_posts($limit)` - Get recent blog posts
+- `get_all_pages()` - Get all pages
+- `Menu::renderMenuLocation('location')` - Render menu
+- `RvMedia::getImageUrl($path)` - Get media URL
+- `BaseHelper::clean($content)` - Clean HTML content
+
+## 🐛 Troubleshooting
+
+### Assets not updating?
+```bash
+npm run dev
+php artisan cache:clear
+```
+
+### Theme not appearing in admin?
+Check `theme.json` has correct structure and theme is in `platform/themes/` directory.
+
+### Styles not loading?
+Ensure `webpack.mix.js` is configured correctly and run `npm run prod`.
+
+## 📖 Resources
+
+- [Theme Development Guide](https://docs.botble.com/cms/theme-development/theme.html)
+- [Blade Templates](https://laravel.com/docs/blade)
+- [Bootstrap Documentation](https://getbootstrap.com/docs/)
+- [Tabler UI Components](https://docs.tabler.io/ui)
+- [Laravel Mix](https://laravel-mix.com/docs/)
+
+## 🤝 Support
+
+- Documentation: https://docs.botble.com
+- Community: https://github.com/botble/botble/discussions
+- Issues: https://github.com/botble/botble/issues
+
+---
+
+Happy theming! 🎨

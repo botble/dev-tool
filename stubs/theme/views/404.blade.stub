@@ -5,24 +5,17 @@
 
 {!! Theme::partial('header') !!}
 
-<div class="container error-page">
-    <div class="error-code">
-        404
-    </div>
-
-    <div class="error-border"></div>
-        <h4>{{ __('This may have occurred because of several reasons') }}:</h4>
-        <ul>
-            <li>{{ __('The page you requested does not exist.') }}</li>
-            <li>{{ __('The link you clicked is no longer.') }}</li>
-            <li>{{ __('The page may have moved to a new location.') }}</li>
-            <li>{{ __('An error may have occurred.') }}</li>
-            <li>{{ __('You are not authorized to view the requested resource.') }}</li>
-        </ul>
-        <br>
-        <strong>{!! BaseHelper::clean(__('Please try again in a few minutes, or alternatively return to the homepage by <a href=":link">clicking here</a>.', ['link' => route('public.index')])) !!}</strong>
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center py-5">
+            <h1 class="display-1">404</h1>
+            <h2>{{ __('Page Not Found') }}</h2>
+            <p class="lead">{{ __('Sorry, the page you are looking for could not be found.') }}</p>
+            <a href="{{ BaseHelper::getHomepageUrl() }}" class="btn btn-primary">
+                <i class="bi bi-house"></i> {{ __('Back to Home') }}
+            </a>
+        </div>
     </div>
 </div>
+
 {!! Theme::partial('footer') !!}
-
-
