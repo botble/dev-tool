@@ -1,10 +1,10 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Tiryaq\DevTool\Commands;
 
-use Botble\DevTool\Helper;
-use Botble\Theme\Facades\Theme;
-use Botble\Widget\Models\Widget;
+use Tiryaq\DevTool\Helper;
+use Tiryaq\Theme\Facades\Theme;
+use Tiryaq\Widget\Models\Widget;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
