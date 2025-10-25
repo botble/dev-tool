@@ -40,7 +40,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Defaults if inputs are empty
           : "${NEW_NS:=Triyaq}"
           : "${PKG_NAME:=}"
 
@@ -65,43 +64,33 @@ jobs:
               s/\\Botble\\/\\'"${NEW_NS}"'\\/g;
             '
 
-          # 3) Update composer.json via Python (PSR-4 + optional name)
+          # 3) Update composer.json (PSR-4 + optional name) using jq
           if [ -f composer.json ]; then
-            python3 - <<'PY'
-import json, os, pathlib
-ns = os.environ.get("NEW_NS","Triyaq")
-pkg = os.environ.get("PKG_NAME","").strip()
-p = pathlib.Path("composer.json")
-data = json.loads(p.read_text(encoding="utf-8"))
-changed = False
-
-for key in ("autoload","autoload-dev"):
-    psr = data.get(key,{}).get("psr-4")
-    if isinstance(psr, dict) and "Botble\\" in psr:
-        psr[ns + "\\"] = psr.pop("Botble\\")
-        changed = True
-
-if pkg:
-    data["name"] = pkg
-    changed = True
-
-if changed:
-    p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-else:
-    print("No composer.json changes needed")
-PY
+            NS_ESC="${NEW_NS}\\\\"
+            jq --arg ns "$NS_ESC" --arg pkg "${PKG_NAME}" '
+              # autoload.psr-4
+              ( if .autoload and .autoload["psr-4"] and .autoload["psr-4"]["Botble\\"] then
+                  .autoload["psr-4"] |= ( . as $root | del(."Botble\\") + { ($ns): $root["Botble\\"] } )
+                else . end ) |
+              # autoload-dev.psr-4
+              ( if .["autoload-dev"] and .["autoload-dev"]["psr-4"] and .["autoload-dev"]["psr-4"]["Botble\\"] then
+                  .["autoload-dev"]["psr-4"] |= ( . as $root | del(."Botble\\") + { ($ns): $root["Botble\\"] } )
+                else . end ) |
+              # optional package name
+              ( if $pkg != "" then .name = $pkg else . end )
+            ' composer.json > composer.json.tmp && mv composer.json.tmp composer.json
           fi
 
           # 4) Commit & push if anything changed
           if git diff --quiet; then
             echo "ℹ️ No changes detected."
-          else:
+          else
             git add -A
             git commit -m "refactor: rename Botble namespace to ${NEW_NS}"
             git push -u origin "$BRANCH"
           fi
 
-          # Prepare variables for PR step
+          # Pass values to PR step
           echo "BRANCH_NAME=${BRANCH}" >> "$GITHUB_ENV"
           echo "NS_FOR_TITLE=${NEW_NS}" >> "$GITHUB_ENV"
           if [ -n "$PKG_NAME" ]; then
