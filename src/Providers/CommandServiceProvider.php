@@ -1,34 +1,34 @@
 <?php
 
-namespace Botble\DevTool\Providers;
+namespace Tiryaq\DevTool\Providers;
 
-use Botble\Base\Supports\ServiceProvider;
-use Botble\DevTool\Commands\LocaleCreateCommand;
-use Botble\DevTool\Commands\LocaleRemoveCommand;
-use Botble\DevTool\Commands\Make\ControllerMakeCommand;
-use Botble\DevTool\Commands\Make\FormMakeCommand;
-use Botble\DevTool\Commands\Make\ModelMakeCommand;
-use Botble\DevTool\Commands\Make\PanelSectionMakeCommand;
-use Botble\DevTool\Commands\Make\RequestMakeCommand;
-use Botble\DevTool\Commands\Make\RouteMakeCommand;
-use Botble\DevTool\Commands\Make\SettingControllerMakeCommand;
-use Botble\DevTool\Commands\Make\SettingFormMakeCommand;
-use Botble\DevTool\Commands\Make\SettingMakeCommand;
-use Botble\DevTool\Commands\Make\SettingRequestMakeCommand;
-use Botble\DevTool\Commands\Make\TableMakeCommand;
-use Botble\DevTool\Commands\PackageCreateCommand;
-use Botble\DevTool\Commands\PackageMakeCrudCommand;
-use Botble\DevTool\Commands\PackageRemoveCommand;
-use Botble\DevTool\Commands\PluginCreateCommand;
-use Botble\DevTool\Commands\PluginMakeCrudCommand;
-use Botble\DevTool\Commands\RebuildPermissionsCommand;
-use Botble\DevTool\Commands\TestSendMailCommand;
-use Botble\DevTool\Commands\ThemeCreateCommand;
-use Botble\DevTool\Commands\WidgetCreateCommand;
-use Botble\DevTool\Commands\WidgetRemoveCommand;
-use Botble\PluginManagement\Providers\PluginManagementServiceProvider;
-use Botble\Theme\Providers\ThemeServiceProvider;
-use Botble\Widget\Providers\WidgetServiceProvider;
+use Tiryaq\Base\Supports\ServiceProvider;
+use Tiryaq\DevTool\Commands\LocaleCreateCommand;
+use Tiryaq\DevTool\Commands\LocaleRemoveCommand;
+use Tiryaq\DevTool\Commands\Make\ControllerMakeCommand;
+use Tiryaq\DevTool\Commands\Make\FormMakeCommand;
+use Tiryaq\DevTool\Commands\Make\ModelMakeCommand;
+use Tiryaq\DevTool\Commands\Make\PanelSectionMakeCommand;
+use Tiryaq\DevTool\Commands\Make\RequestMakeCommand;
+use Tiryaq\DevTool\Commands\Make\RouteMakeCommand;
+use Tiryaq\DevTool\Commands\Make\SettingControllerMakeCommand;
+use Tiryaq\DevTool\Commands\Make\SettingFormMakeCommand;
+use Tiryaq\DevTool\Commands\Make\SettingMakeCommand;
+use Tiryaq\DevTool\Commands\Make\SettingRequestMakeCommand;
+use Tiryaq\DevTool\Commands\Make\TableMakeCommand;
+use Tiryaq\DevTool\Commands\PackageCreateCommand;
+use Tiryaq\DevTool\Commands\PackageMakeCrudCommand;
+use Tiryaq\DevTool\Commands\PackageRemoveCommand;
+use Tiryaq\DevTool\Commands\PluginCreateCommand;
+use Tiryaq\DevTool\Commands\PluginMakeCrudCommand;
+use Tiryaq\DevTool\Commands\RebuildPermissionsCommand;
+use Tiryaq\DevTool\Commands\TestSendMailCommand;
+use Tiryaq\DevTool\Commands\ThemeCreateCommand;
+use Tiryaq\DevTool\Commands\WidgetCreateCommand;
+use Tiryaq\DevTool\Commands\WidgetRemoveCommand;
+use Tiryaq\PluginManagement\Providers\PluginManagementServiceProvider;
+use Tiryaq\Theme\Providers\ThemeServiceProvider;
+use Tiryaq\Widget\Providers\WidgetServiceProvider;
 
 class CommandServiceProvider extends ServiceProvider
 {
