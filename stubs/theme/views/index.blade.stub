@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
-        <h1>{{ theme_option('homepage_title', 'Welcome to ' . theme_option('site_title', 'Botble CMS')) }}</h1>
-        <p class="lead">{{ theme_option('homepage_description', 'Start building your amazing website with Botble CMS and Bootstrap 5.') }}</p>
+        <h1>{{ theme_option('homepage_title', 'Welcome to ' . theme_option('site_title', 'Triyaq CMS')) }}</h1>
+        <p class="lead">{{ theme_option('homepage_description', 'Start building your amazing website with Triyaq CMS and Bootstrap 5.') }}</p>
     </div>
 </div>
 

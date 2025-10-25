@@ -4,7 +4,7 @@
     "type": "package",
     "autoload": {
         "psr-4": {
-            "Botble\\{Name}\\": "src"
+            "Triyaq\\{Name}\\": "src"
         }
     },
     "require": {
@@ -12,7 +12,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Botble\\{Name}\\Providers\\{Name}ServiceProvider"
+                "Triyaq\\{Name}\\Providers\\{Name}ServiceProvider"
             ]
         }
     }

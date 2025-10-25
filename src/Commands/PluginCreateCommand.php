@@ -275,7 +275,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
             ],
             'namespace' => [
                 'label' => 'Namespace:',
-                'default' => 'Botble/{PluginName}',
+                'default' => 'Triyaq/{PluginName}',
             ],
             'provider' => [
                 'label' => 'ServiceProvider:',
@@ -422,7 +422,7 @@ class PluginCreateCommand extends BaseMakeCommand implements PromptsForMissingIn
             return null;
         }
 
-        $imports = ['Botble\Base\Facades\DashboardMenu'];
+        $imports = ['Triyaq\Base\Facades\DashboardMenu'];
 
         $imports[] = sprintf('%s\Models\%s', str_replace('\\\\', '\\', $this->argument('namespace')), Str::studly($this->argument('name')));
 
