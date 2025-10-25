@@ -1,12 +1,12 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Tiryaq\DevTool\Commands;
 
-use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
-use Botble\DevTool\Helper;
-use Botble\Theme\Commands\Traits\ThemeTrait;
-use Botble\Theme\Facades\Theme;
-use Botble\Theme\Services\ThemeService;
+use Tiryaq\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Tiryaq\DevTool\Helper;
+use Tiryaq\Theme\Commands\Traits\ThemeTrait;
+use Tiryaq\Theme\Facades\Theme;
+use Tiryaq\Theme\Services\ThemeService;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem as File;
 use Illuminate\Support\Arr;
