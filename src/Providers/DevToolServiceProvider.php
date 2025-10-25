@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\DevTool\Providers;
+namespace Tiryaq\DevTool\Providers;
 
-use Botble\Base\Supports\ServiceProvider;
+use Tiryaq\Base\Supports\ServiceProvider;
 
 class DevToolServiceProvider extends ServiceProvider
 {
