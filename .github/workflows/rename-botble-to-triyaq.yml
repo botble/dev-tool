@@ -1,14 +1,14 @@
-name: Refactor Botble ➜ Triyaq
+name: Refactor Botble to Triyaq
 
 on:
   workflow_dispatch:
     inputs:
       new_namespace:
         description: 'Replace Botble\\ with this namespace'
-        required: true
-        default: 'Triyaq'   # أو اكتب Tiryaq وقت التشغيل لو حابب
+        required: false
+        default: 'Triyaq'
       package_name:
-        description: 'Optional: set composer.json name (e.g., triyaq/dev-tool)'
+        description: 'Optional composer package name, e.g. triyaq/dev-tool'
         required: false
         default: ''
 
@@ -19,6 +19,10 @@ permissions:
 jobs:
   refactor:
     runs-on: ubuntu-latest
+
+    env:
+      NEW_NS: ${{ github.event.inputs.new_namespace }}
+      PKG_NAME: ${{ github.event.inputs.package_name }}
 
     steps:
       - name: Checkout repo
@@ -32,16 +36,18 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Run automated refactor
-        env:
-          NEW_NS: ${{ github.event.inputs.new_namespace }}
-          PKG_NAME: ${{ github.event.inputs.package_name }}
+        shell: bash
         run: |
           set -euo pipefail
+
+          # Defaults if inputs are empty
+          : "${NEW_NS:=Triyaq}"
+          : "${PKG_NAME:=}"
 
           BRANCH="chore/rename-botble-to-$(echo "${NEW_NS}" | tr '[:upper:]' '[:lower:]')"
           git checkout -b "$BRANCH" || git checkout "$BRANCH"
 
-          # 1) Rename any directory named Botble -> $NEW_NS (deepest first)
+          # 1) Rename directories named "Botble" -> "${NEW_NS}" (deepest first)
           find . -type d -name "Botble" \
             -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./storage/*" \
             | sort -r | while IFS= read -r d; do
@@ -50,7 +56,7 @@ jobs:
               git mv "$d" "$newdir"
             done
 
-          # 2) Replace namespaces and qualified refs in files (safe quoting)
+          # 2) Replace namespaces and qualified refs in files
           find . -type f \( -name "*.php" -o -name "*.md" -o -name "*.stub" -o -name "*.json" -o -name "*.lock" -o -name "*.dist" \) \
             -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./storage/*" -print0 \
             | xargs -0 perl -0777 -i -pe '
@@ -59,35 +65,34 @@ jobs:
               s/\\Botble\\/\\'"${NEW_NS}"'\\/g;
             '
 
-          # 3) Update composer.json via Python (avoids perl quoting issues)
+          # 3) Update composer.json safely via Python (PSR-4 + optional name)
           if [ -f composer.json ]; then
             python3 - <<'PY'
-import json, os, sys, pathlib
-ns = os.environ["NEW_NS"]
-pkg = os.environ.get("PKG_NAME","")
+import json, os, pathlib
+ns = os.environ.get("NEW_NS","Triyaq")
+pkg = os.environ.get("PKG_NAME","").strip()
 p = pathlib.Path("composer.json")
-data = json.loads(p.read_text())
+data = json.loads(p.read_text(encoding="utf-8"))
 changed = False
 
-for key in ("autoload", "autoload-dev"):
-    if key in data and isinstance(data[key], dict) and "psr-4" in data[key]:
-        psr = data[key]["psr-4"]
-        if "Botble\\" in psr:
-            psr[ns + "\\"] = psr.pop("Botble\\")
-            changed = True
+for key in ("autoload","autoload-dev"):
+    psr = data.get(key,{}).get("psr-4")
+    if isinstance(psr, dict) and "Botble\\" in psr:
+        psr[ns + "\\"] = psr.pop("Botble\\")
+        changed = True
 
 if pkg:
     data["name"] = pkg
     changed = True
 
 if changed:
-    p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 else:
     print("No composer.json changes needed")
 PY
           fi
 
-          # 4) Commit & push if changes exist
+          # 4) Commit & push if anything changed
           if git diff --quiet; then
             echo "ℹ️ No changes detected."
           else
@@ -96,19 +101,23 @@ PY
             git push -u origin "$BRANCH"
           fi
 
+          # Pass values to later steps
+          echo "BRANCH_NAME=${BRANCH}" >> "$GITHUB_ENV"
+          echo "NS_FOR_TITLE=${NEW_NS}" >> "$GITHUB_ENV"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: ${{ format('chore/rename-botble-to-{0}', (github.event.inputs.new_namespace || 'Triyaq') ) }}
+          branch: ${{ env.BRANCH_NAME }}
           base: develop
-          title: 'refactor: rename Botble ➜ ${{ github.event.inputs.new_namespace || '' }}'
+          title: "refactor: rename Botble -> ${{ env.NS_FOR_TITLE }}"
           body: |
             Automated namespace refactor:
-            - `namespace Botble\…` ➜ `namespace ${{ github.event.inputs.new_namespace || 'Triyaq' }}\…`
-            - `use Botble\…` ➜ `use ${{ github.event.inputs.new_namespace || 'Triyaq' }}\…`
-            - `\Botble\…` ➜ `\${{ github.event.inputs.new_namespace || 'Triyaq' }}\…`
+            - `namespace Botble\…` -> `namespace ${{ env.NS_FOR_TITLE }}\…`
+            - `use Botble\…` -> `use ${{ env.NS_FOR_TITLE }}\…`
+            - `\Botble\…` -> `\${{ env.NS_FOR_TITLE }}\…`
             - PSR-4 updated in `composer.json`
-            ${{ github.event.inputs.package_name != '' && format('- Package name set to `{0}`', github.event.inputs.package_name) || '' }}
+            ${{ env.PKG_NAME && format('- Package name set to `{0}`', env.PKG_NAME) || '' }}
           labels: |
             chore
             refactor
