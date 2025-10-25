@@ -1,8 +1,6 @@
 <?php
-
-namespace Botble\DevTool\Commands;
-
-use Botble\ACL\Models\User;
+namespace Triyaq\DevTool\Commands;
+use Triyaq\ACL\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Attribute\AsCommand;

@@ -1,9 +1,7 @@
 <?php
-
-namespace Botble\DevTool\Commands\Abstracts;
-
-use Botble\Base\Facades\BaseHelper;
-use Botble\DevTool\Helper;
+namespace Triyaq\DevTool\Commands\Abstracts;
+use Triyaq\Base\Facades\BaseHelper;
+use Triyaq\DevTool\Helper;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;

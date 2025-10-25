@@ -1,12 +1,11 @@
 <?php
 
 namespace {Module}\Forms;
-
-use Botble\Base\Forms\FieldOptions\NameFieldOption;
-use Botble\Base\Forms\FieldOptions\StatusFieldOption;
-use Botble\Base\Forms\Fields\SelectField;
-use Botble\Base\Forms\Fields\TextField;
-use Botble\Base\Forms\FormAbstract;
+use Triyaq\Base\Forms\FieldOptions\NameFieldOption;
+use Triyaq\Base\Forms\FieldOptions\StatusFieldOption;
+use Triyaq\Base\Forms\Fields\SelectField;
+use Triyaq\Base\Forms\Fields\TextField;
+use Triyaq\Base\Forms\FormAbstract;
 use {Module}\Http\Requests\{Name}Request;
 use {Module}\Models\{Name};
 

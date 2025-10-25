@@ -1,6 +1,5 @@
 <?php
-
-use Botble\Theme\Supports\ThemeSupport;
+use Triyaq\Theme\Supports\ThemeSupport;
 
 app()->booted(function () {
     ThemeSupport::registerGoogleMapsShortcode();

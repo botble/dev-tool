@@ -1,9 +1,8 @@
 <?php
 
 namespace {Module}\Http\Requests;
-
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Support\Http\Requests\Request;
+use Triyaq\Base\Enums\BaseStatusEnum;
+use Triyaq\Support\Http\Requests\Request;
 use Illuminate\Validation\Rule;
 
 class {Name}Request extends Request

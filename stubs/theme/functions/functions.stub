@@ -1,7 +1,6 @@
 <?php
-
-use Botble\Media\Facades\RvMedia;
-use Botble\Theme\Supports\ThemeSupport;
+use Triyaq\Media\Facades\RvMedia;
+use Triyaq\Theme\Supports\ThemeSupport;
 
 register_page_template([
     'default' => __('Default'),

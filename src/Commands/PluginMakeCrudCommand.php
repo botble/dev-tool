@@ -1,12 +1,10 @@
 <?php
-
-namespace Botble\DevTool\Commands;
-
-use Botble\Base\Facades\BaseHelper;
-use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
-use Botble\DevTool\Commands\Concerns\HasSubModule;
-use Botble\DevTool\Helper;
-use Botble\PluginManagement\Commands\Concern\HasPluginNameValidation;
+namespace Triyaq\DevTool\Commands;
+use Triyaq\Base\Facades\BaseHelper;
+use Triyaq\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Triyaq\DevTool\Commands\Concerns\HasSubModule;
+use Triyaq\DevTool\Helper;
+use Triyaq\PluginManagement\Commands\Concern\HasPluginNameValidation;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;

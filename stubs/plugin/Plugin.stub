@@ -3,7 +3,7 @@
 namespace {Module};
 
 use Illuminate\Support\Facades\Schema;
-use Botble\PluginManagement\Abstracts\PluginOperationAbstract;
+use Triyaq\PluginManagement\Abstracts\PluginOperationAbstract;
 
 class Plugin extends PluginOperationAbstract
 {

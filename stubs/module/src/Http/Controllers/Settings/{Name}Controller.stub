@@ -1,11 +1,10 @@
 <?php
 
 namespace {Module}\Http\Controllers\Settings;
-
-use Botble\Base\Forms\FormBuilder;
+use Triyaq\Base\Forms\FormBuilder;
 use {Module}\Forms\Settings\{Name}Form;
 use {Module}\Http\Requests\Settings\{Name}Request;
-use Botble\Setting\Http\Controllers\SettingController;
+use Triyaq\Setting\Http\Controllers\SettingController;
 
 class {Name}Controller extends SettingController
 {

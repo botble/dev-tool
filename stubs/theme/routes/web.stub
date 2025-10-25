@@ -1,6 +1,5 @@
 <?php
-
-use Botble\Theme\Facades\Theme;
+use Triyaq\Theme\Facades\Theme;
 use Illuminate\Support\Facades\Route;
 
 // Custom routes

@@ -1,8 +1,6 @@
 <?php
-
-namespace Botble\DevTool\Commands;
-
-use Botble\DevTool\Helper;
+namespace Triyaq\DevTool\Commands;
+use Triyaq\DevTool\Helper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Symfony\Component\Console\Attribute\AsCommand;

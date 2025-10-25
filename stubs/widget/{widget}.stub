@@ -1,6 +1,5 @@
 <?php
-
-use Botble\Widget\AbstractWidget;
+use Triyaq\Widget\AbstractWidget;
 use Illuminate\Support\Collection;
 
 class {Widget}Widget extends AbstractWidget

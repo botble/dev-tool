@@ -3,18 +3,18 @@
 namespace {Module}\Tables;
 
 use {Module}\Models\{Name};
-use Botble\Table\Abstracts\TableAbstract;
-use Botble\Table\Actions\DeleteAction;
-use Botble\Table\Actions\EditAction;
-use Botble\Table\BulkActions\DeleteBulkAction;
-use Botble\Table\BulkChanges\CreatedAtBulkChange;
-use Botble\Table\BulkChanges\NameBulkChange;
-use Botble\Table\BulkChanges\StatusBulkChange;
-use Botble\Table\Columns\CreatedAtColumn;
-use Botble\Table\Columns\IdColumn;
-use Botble\Table\Columns\NameColumn;
-use Botble\Table\Columns\StatusColumn;
-use Botble\Table\HeaderActions\CreateHeaderAction;
+use Triyaq\Table\Abstracts\TableAbstract;
+use Triyaq\Table\Actions\DeleteAction;
+use Triyaq\Table\Actions\EditAction;
+use Triyaq\Table\BulkActions\DeleteBulkAction;
+use Triyaq\Table\BulkChanges\CreatedAtBulkChange;
+use Triyaq\Table\BulkChanges\NameBulkChange;
+use Triyaq\Table\BulkChanges\StatusBulkChange;
+use Triyaq\Table\Columns\CreatedAtColumn;
+use Triyaq\Table\Columns\IdColumn;
+use Triyaq\Table\Columns\NameColumn;
+use Triyaq\Table\Columns\StatusColumn;
+use Triyaq\Table\HeaderActions\CreateHeaderAction;
 use Illuminate\Database\Eloquent\Builder;
 
 class {Name}Table extends TableAbstract

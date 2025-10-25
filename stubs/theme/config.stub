@@ -1,7 +1,6 @@
 <?php
-
-use Botble\Shortcode\View\View;
-use Botble\Theme\Theme;
+use Triyaq\Shortcode\View\View;
+use Triyaq\Theme\Theme;
 
 return [
 

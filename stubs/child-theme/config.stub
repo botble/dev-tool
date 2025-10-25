@@ -1,6 +1,5 @@
 <?php
-
-use Botble\Theme\Theme;
+use Triyaq\Theme\Theme;
 
 return [
 

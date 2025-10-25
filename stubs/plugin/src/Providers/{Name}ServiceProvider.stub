@@ -1,9 +1,8 @@
 <?php
 
 namespace {Module}\Providers;
-
-use Botble\Base\Supports\ServiceProvider;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
+use Triyaq\Base\Supports\ServiceProvider;
+use Triyaq\Base\Traits\LoadAndPublishDataTrait;
 {PluginServiceProviderImports}
 class {Name}ServiceProvider extends ServiceProvider
 {

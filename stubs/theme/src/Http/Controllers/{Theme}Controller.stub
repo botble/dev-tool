@@ -1,8 +1,7 @@
 <?php
 
 namespace Theme\{Theme}\Http\Controllers;
-
-use Botble\Theme\Http\Controllers\PublicController;
+use Triyaq\Theme\Http\Controllers\PublicController;
 
 class {Theme}Controller extends PublicController
 {

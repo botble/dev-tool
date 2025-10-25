@@ -1,8 +1,6 @@
 <?php
-
-namespace Botble\DevTool\Commands\Concerns;
-
-use Botble\DevTool\Helper;
+namespace Triyaq\DevTool\Commands\Concerns;
+use Triyaq\DevTool\Helper;
 
 use function Laravel\Prompts\info;
 

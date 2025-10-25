@@ -1,10 +1,10 @@
 // Add after this line: if (defined('LANGUAGE_ADVANCED_MODULE_SCREEN_NAME')) {
-\Botble\LanguageAdvanced\Supports\LanguageAdvancedManager::registerModule(\{Module}\Models\{Name}::class, [
+\Triyaq\LanguageAdvanced\Supports\LanguageAdvancedManager::registerModule(\{Module}\Models\{Name}::class, [
     'name',
 ]);
 
 // Add after this line: DashboardMenu::default()->beforeRetrieving(function () {
-\Botble\Base\Facades\DashboardMenu::registerItem([
+\Triyaq\Base\Facades\DashboardMenu::registerItem([
     'id' => 'cms-{types}-{-name}',
     'priority' => 0,
     'parent_id' => 'cms-{types}-{-module}',

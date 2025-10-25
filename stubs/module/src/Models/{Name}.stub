@@ -1,10 +1,9 @@
 <?php
 
 namespace {Module}\Models;
-
-use Botble\Base\Casts\SafeContent;
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+use Triyaq\Base\Casts\SafeContent;
+use Triyaq\Base\Enums\BaseStatusEnum;
+use Triyaq\Base\Models\BaseModel;
 
 class {Name} extends BaseModel
 {

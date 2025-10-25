@@ -1,6 +1,5 @@
 <?php
-
-use Botble\Base\Facades\AdminHelper;
+use Triyaq\Base\Facades\AdminHelper;
 use {Module}\Http\Controllers\{Name}Controller;
 use Illuminate\Support\Facades\Route;
 

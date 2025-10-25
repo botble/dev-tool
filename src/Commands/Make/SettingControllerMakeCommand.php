@@ -1,10 +1,8 @@
 <?php
-
-namespace Botble\DevTool\Commands\Make;
-
-use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
-use Botble\DevTool\Commands\Concerns\HasModuleSelector;
-use Botble\DevTool\Helper;
+namespace Triyaq\DevTool\Commands\Make;
+use Triyaq\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Triyaq\DevTool\Commands\Concerns\HasModuleSelector;
+use Triyaq\DevTool\Helper;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;

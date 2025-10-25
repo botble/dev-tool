@@ -1,10 +1,8 @@
 <?php
-
-namespace Botble\DevTool\Commands;
-
-use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Supports\Helper;
-use Botble\DevTool\Helper as HelperDevTool;
+namespace Triyaq\DevTool\Commands;
+use Triyaq\Base\Facades\BaseHelper;
+use Triyaq\Base\Supports\Helper;
+use Triyaq\DevTool\Helper as HelperDevTool;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\DB;
