@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\DevTool;
+namespace Tiryaq\DevTool;
 
 class Helper
 {
