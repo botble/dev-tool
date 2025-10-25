@@ -6,9 +6,9 @@ on:
       new_namespace:
         description: 'Replace Botble\\ with this namespace'
         required: true
-        default: 'Triyaq'   # غيّرها لـ Tiryaq لو ده اللي عايزه
+        default: 'Triyaq'   # أو اكتب Tiryaq وقت التشغيل لو حابب
       package_name:
-        description: 'Optional: set composer.json name to this (e.g., triyaq/dev-tool)'
+        description: 'Optional: set composer.json name (e.g., triyaq/dev-tool)'
         required: false
         default: ''
 
@@ -38,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          BRANCH="chore/rename-botble-to-${NEW_NS,,}"
+          BRANCH="chore/rename-botble-to-$(echo "${NEW_NS}" | tr '[:upper:]' '[:lower:]')"
           git checkout -b "$BRANCH" || git checkout "$BRANCH"
 
           # 1) Rename any directory named Botble -> $NEW_NS (deepest first)
@@ -50,55 +50,63 @@ jobs:
               git mv "$d" "$newdir"
             done
 
-          # 2) Replace namespaces and qualified refs in files
-          #    namespace Botble\X  -> namespace NEW_NS\X
-          #    use Botble\X        -> use NEW_NS\X
-          #    \Botble\X           -> \NEW_NS\X
+          # 2) Replace namespaces and qualified refs in files (safe quoting)
           find . -type f \( -name "*.php" -o -name "*.md" -o -name "*.stub" -o -name "*.json" -o -name "*.lock" -o -name "*.dist" \) \
             -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./storage/*" -print0 \
-            | xargs -0 perl -0777 -i -pe "
-              s/^\\s*namespace\\s+Botble\\\\(\\S*)/namespace ${NEW_NS}\\\\\$1/gm;
-              s/^\\s*use\\s+Botble\\\\/use ${NEW_NS}\\\\/gm;
-              s/\\\\Botble\\\\/\\\\${NEW_NS}\\\\/g;
-            "
+            | xargs -0 perl -0777 -i -pe '
+              s/^\s*namespace\s+Botble\\(\S*)/namespace '"${NEW_NS}"'\\$1/gm;
+              s/^\s*use\s+Botble\\/use '"${NEW_NS}"'\\/gm;
+              s/\\Botble\\/\\'"${NEW_NS}"'\\/g;
+            '
 
-          # 3) Update composer.json PSR-4 autoload from "Botble\\": "src/" to "${NEW_NS}\\": "src/"
+          # 3) Update composer.json via Python (avoids perl quoting issues)
           if [ -f composer.json ]; then
-            perl -0777 -i -pe '
-              s/"psr-4"\s*:\s*\{([^}]*)\}/
-                do {
-                  my $blk = $1;
-                  $blk =~ s/"Botble\\\\"\s*:\s*"([^"]*)"/"'\"${NEW_NS//\//\\/}\"'\\\\": "$1"/g;
-                  "\"psr-4\": {$blk}"
-                }/gex;
-            ' composer.json
+            python3 - <<'PY'
+import json, os, sys, pathlib
+ns = os.environ["NEW_NS"]
+pkg = os.environ.get("PKG_NAME","")
+p = pathlib.Path("composer.json")
+data = json.loads(p.read_text())
+changed = False
 
-            # Optional: set package "name"
-            if [ -n "$PKG_NAME" ]; then
-              perl -0777 -i -pe 's/"name"\s*:\s*"[a-z0-9._-]+\/[a-z0-9._-]+"/"name": "'$PKG_NAME'"/i' composer.json
-            fi
+for key in ("autoload", "autoload-dev"):
+    if key in data and isinstance(data[key], dict) and "psr-4" in data[key]:
+        psr = data[key]["psr-4"]
+        if "Botble\\" in psr:
+            psr[ns + "\\"] = psr.pop("Botble\\")
+            changed = True
+
+if pkg:
+    data["name"] = pkg
+    changed = True
+
+if changed:
+    p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+else:
+    print("No composer.json changes needed")
+PY
           fi
 
-          # 4) Show diff & commit if changes exist
+          # 4) Commit & push if changes exist
           if git diff --quiet; then
             echo "ℹ️ No changes detected."
-            exit 0
+          else
+            git add -A
+            git commit -m "refactor: rename Botble namespace to ${NEW_NS}"
+            git push -u origin "$BRANCH"
           fi
-
-          git add -A
-          git commit -m "refactor: rename Botble namespace to ${NEW_NS}"
-          git push -u origin "$BRANCH"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: ${{ github.ref_name }}
-          title: 'refactor: rename Botble ➜ ${{ github.event.inputs.new_namespace }}'
+          branch: ${{ format('chore/rename-botble-to-{0}', (github.event.inputs.new_namespace || 'Triyaq') ) }}
+          base: develop
+          title: 'refactor: rename Botble ➜ ${{ github.event.inputs.new_namespace || '' }}'
           body: |
             Automated namespace refactor:
-            - `namespace Botble\…` ➜ `namespace ${{ github.event.inputs.new_namespace }}\…`
-            - `use Botble\…` ➜ `use ${{ github.event.inputs.new_namespace }}\…`
-            - `\Botble\…` ➜ `\${{ github.event.inputs.new_namespace }}\…`
+            - `namespace Botble\…` ➜ `namespace ${{ github.event.inputs.new_namespace || 'Triyaq' }}\…`
+            - `use Botble\…` ➜ `use ${{ github.event.inputs.new_namespace || 'Triyaq' }}\…`
+            - `\Botble\…` ➜ `\${{ github.event.inputs.new_namespace || 'Triyaq' }}\…`
             - PSR-4 updated in `composer.json`
             ${{ github.event.inputs.package_name != '' && format('- Package name set to `{0}`', github.event.inputs.package_name) || '' }}
           labels: |
