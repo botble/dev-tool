@@ -65,7 +65,7 @@ jobs:
               s/\\Botble\\/\\'"${NEW_NS}"'\\/g;
             '
 
-          # 3) Update composer.json safely via Python (PSR-4 + optional name)
+          # 3) Update composer.json via Python (PSR-4 + optional name)
           if [ -f composer.json ]; then
             python3 - <<'PY'
 import json, os, pathlib
@@ -95,15 +95,20 @@ PY
           # 4) Commit & push if anything changed
           if git diff --quiet; then
             echo "ℹ️ No changes detected."
-          else
+          else:
             git add -A
             git commit -m "refactor: rename Botble namespace to ${NEW_NS}"
             git push -u origin "$BRANCH"
           fi
 
-          # Pass values to later steps
+          # Prepare variables for PR step
           echo "BRANCH_NAME=${BRANCH}" >> "$GITHUB_ENV"
           echo "NS_FOR_TITLE=${NEW_NS}" >> "$GITHUB_ENV"
+          if [ -n "$PKG_NAME" ]; then
+            echo "PKG_LINE=- Package name set to \`${PKG_NAME}\`" >> "$GITHUB_ENV"
+          else
+            echo "PKG_LINE=" >> "$GITHUB_ENV"
+          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -117,7 +122,7 @@ PY
             - `use Botble\…` -> `use ${{ env.NS_FOR_TITLE }}\…`
             - `\Botble\…` -> `\${{ env.NS_FOR_TITLE }}\…`
             - PSR-4 updated in `composer.json`
-            ${{ env.PKG_NAME && format('- Package name set to `{0}`', env.PKG_NAME) || '' }}
+            ${{ env.PKG_LINE }}
           labels: |
             chore
             refactor
