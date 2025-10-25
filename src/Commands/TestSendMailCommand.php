@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Tiryaq\DevTool\Commands;
 
-use Botble\Base\Facades\EmailHandler;
-use Botble\DevTool\Helper;
+use Tiryaq\Base\Facades\EmailHandler;
+use Tiryaq\DevTool\Helper;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 
